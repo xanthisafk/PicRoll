@@ -9,7 +9,7 @@ import logo from '../../public/logo.jpg'
 export default function Home() {
 
   const [currentSubreddit, changeSubreddit] = useState("")
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<any[]>([]);
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const subreddit = e.target.value;
