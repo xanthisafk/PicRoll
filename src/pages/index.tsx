@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Masonry } from '@mui/lab';
-import { Box, Button, ImageList, ImageListItem, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import Head from 'next/head'
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react'
+import logo from '../../public/logo.jpg'
 
 export default function Home() {
 
@@ -38,8 +39,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Redditor</title>
-        <meta name="description" content="redditor" />
+        <title>PicRoll</title>
+        <meta name="description" content="reddit image feed made easy" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -53,6 +54,13 @@ export default function Home() {
           justifyContent: 'space-evenly'
         }}
       >
+        <Image
+          src={logo}
+          alt={"logo of website"}
+          width={56}
+          height={56}
+          title={"Welcome to PicRoll"}
+        />
         <TextField
         id="subreddit"
         label="subreddit"
@@ -90,28 +98,8 @@ export default function Home() {
         ))}
       </Masonry>
 
-      {/* <ImageList
-        variant='masonry'
-        cols={2}
-        rowHeight={700}
-      >
-        {images && images.map((path, index) => 
-          <ImageListItem key={index}>
-            <img
-              src={path.imageUrl}
-              alt={path.title}
-              title={path.title}
-              key={index}
-              loading={"lazy"}
-              style={{
-                width: path.width,
-                height: path.height
-              }}
-            />
-          </ImageListItem>
-        )}
-      </ImageList> */}
       </main>
+
     </>
   )
 }

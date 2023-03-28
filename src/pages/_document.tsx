@@ -2,6 +2,7 @@ import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/system'
 import CssBaseline from '@mui/material/CssBaseline';
 import { Html, Head, Main, NextScript } from 'next/document'
+import Footer from '../../lib/Footer';
 
 export default function Document() {
 
@@ -21,7 +22,7 @@ export default function Document() {
           <Main />
           <NextScript />
         </ThemeProvider>
-
+        <Footer />
       </body>
     </Html>
   )
