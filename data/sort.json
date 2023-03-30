@@ -1,12 +1,34 @@
-{
-    "time": [
-        "Random",
-        "Hot",
-        "New",
-        "Top (Today)",
-        "Top (Week)",
-        "Top (Month)",
-        "Top (Year)",
-        "Top (All time)"
-    ]
-}
+[
+    {
+        "text": "Hot",
+        "value": "hot"
+    },
+    {
+        "text": "New",
+        "value": "new"
+    },
+    {
+        "text": "Top (Hour)",
+        "value": "hour"
+    },
+    {
+        "text": "Top (Today)",
+        "value": "day"
+    },
+    {
+        "text": "Top (Week)",
+        "value": "week"
+    },
+    {
+        "text": "Top (Month)",
+        "value": "month"
+    },
+    {
+        "text": "Top (Year)",
+        "value": "year"
+    },
+    {
+        "text": "Top (All time)",
+        "value": "all"
+    }
+]
