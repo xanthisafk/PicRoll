@@ -16,12 +16,16 @@ const LoadingBox = (props) => {
       {/* Show greeting message when isLoading is false and data is empty */}
       {!isLoading && data.length === 0 &&
       <Flex
+        position={"relative"}
         width={"100%"}
-        height={"70vh"}
+        minHeight={"0"}
+        marginY={3}
         padding={3}
         direction={"column"}
         justifyContent={"center"}
         alignItems={"center"}
+        overflow={"auto"}
+        wrap={"wrap"}
       >
         <Text textAlign={"center"}>{meta.nothingLoadedText}</Text>
         <Flex
@@ -42,7 +46,7 @@ const LoadingBox = (props) => {
       {isLoading && (
         <MasonryLayout>
           <Skeleton height="60vh" my="10px" />
-          <Skeleton height="40vh" my="10px" />
+          <Skeleton height="45vh" my="10px" />
           <Skeleton height="55vh" my="10px" />
         </MasonryLayout>
       )}

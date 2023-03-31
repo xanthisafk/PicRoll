@@ -37,12 +37,16 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
                 </ModalHeader>
                 
                 <ModalBody>
-                    <Flex justify={"center"} direction={{base: 'column', md: 'row', lg: 'row'}}>
-                        
+                    <Flex
+                        justify={"center"}
+                        height={"80vh"}
+                        direction={{base: 'column', md: 'row', lg: 'row'}}>
                         <Image
                             src={url}
                             alt={title}
-                            maxH={{base: '60vh', md: '70vh', lg: '90vh'}}
+                            // maxH={{base: '60vh', md: '70vh', lg: '90vh'}}
+                            maxW={"50vw"}
+                            objectFit={"contain"}
                             borderRadius={"md"}
                         />
                         <Box p={4}>

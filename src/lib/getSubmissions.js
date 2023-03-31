@@ -1,6 +1,16 @@
 import redditClient from "./reddit";
 import error from '../data/error.json'
 
+const buildErrorMessage = (message, statusCode) => {
+    return {
+        error: true,
+        data: {
+            message
+        },
+        status: statusCode
+    }
+}
+
 
 /**
 *   Asynchronously gets subreddit submission data based on subreddit name and sort type.
@@ -11,7 +21,7 @@ import error from '../data/error.json'
 const getSubmission = async (subreddit, sortType) => {
 
     const options = {
-        limit: 50,
+        limit: 100,
         time: sortType
     }
 
@@ -23,7 +33,9 @@ const getSubmission = async (subreddit, sortType) => {
 
     const reddit = redditClient();
     const sub = await reddit.getSubreddit(subreddit);
+    
 
+    try {
     switch (sortType) {
 
         case 'hot':
@@ -43,16 +55,21 @@ const getSubmission = async (subreddit, sortType) => {
             break;
 
         default:
-            response = { error: true, message: error["400"], status: 400 }
+            response = buildErrorMessage(error[400], 400)
             break;
     }
+} catch (ex) {
+    if (ex.error.reason === "banned") {
+        response = buildErrorMessage(error["banned"], 404);
+    }
 
-    if (!response.data?.length) {
-        response = {
-            error: true,
-            message: error["404"],
-            status: 404
-        }
+    else {
+        response = buildErrorMessage(error["500"], 500);
+    }
+}
+
+    if (response.data?.length === 0) {
+        response = buildErrorMessage(error[404], 404);
     }
 
     return response;

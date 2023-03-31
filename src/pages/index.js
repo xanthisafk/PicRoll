@@ -4,10 +4,23 @@ import Image from 'next/image'
 import meta from '../data/meta.json'
 
 import sort from '../data/sort.json'
-import { Box, Button, Flex, IconButton, Input, InputGroup, InputLeftAddon, Select, Skeleton, Text, useColorMode } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon,
+  Select,
+  Text,
+  useColorMode,
+  useToast
+} from '@chakra-ui/react';
 import logo from '../../public/logo.jpg'
 import "@fontsource/fasthand"
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useRef, useState } from 'react';
 import LoadingBox from '../components/LoadingBox';
 import extractSubredditName from '../lib/extractSubredditName';
@@ -21,7 +34,10 @@ export default function Home() {
   const subredditRef = useRef("");
   const sortRef = useRef("");
   const [isLoading, setLoading] = useState(false);
+  const [siteTitle, setSiteTitle] = useState(meta.title)
   const [data, setData] = useState([]);
+
+  const toast = useToast();
 
   /**
  * Handles the form submission event by preventing the default behavior and calling the handleClick function.
@@ -40,6 +56,16 @@ export default function Home() {
     setLoading(() => false);
   }
 
+  const toastErrorMessage = ({message}) => {
+    toast({
+      status: "error",
+      title: "error",
+      description: message,
+      duration: 9000,
+      isClosable: true
+    })
+  }
+
   const fetchHandler = async () => {
     const subreddit = extractSubredditName(subredditRef.current.value);
     if (!subreddit) { return alert("You did not enter a subreddit.") }
@@ -47,14 +73,19 @@ export default function Home() {
 
     let error = false;
     const data = await fetch(`/api/v1/get_images/${subreddit}/${sort}`)
-      .then(data => data.json())
-      .then(data => data.data)
-      .catch(e => {
-        error = true;
-        return e
-      });
+      .then(res => res.json())
+      .then(res => {
+        error = res.error;
+        return res.data;
+      })
+      .catch(console.error)
 
-    error ? alert(data.message) : setData(() => data);
+      if (error) {
+        toastErrorMessage(data);
+      } else {
+        setData(() => data);
+        setSiteTitle(() => `${subreddit} - ${meta.title}`)
+      }
 
   }
 
@@ -67,7 +98,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>{meta.title}</title>
+        <title>{siteTitle}</title>
         <meta name="description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
         <meta name="keywords" content={meta.keywords.replace("%%APPNAME%%", meta.title)} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -75,7 +106,7 @@ export default function Home() {
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
         <meta property="og:image" content="/logo_hq.png" />
-        <meta property="og:url" content="https://pic-roll.vercel.app" />
+        <meta property="og:url" content="https://picroll.vercel.app" />
 
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
@@ -125,6 +156,13 @@ export default function Home() {
                   variant={'outline'}
                   placeholder={meta.searchPlaceholder}
                 />
+                <InputRightAddon
+                  cursor={"pointer"}
+                  title={"Clear input"}
+                  onClick={() => {subredditRef.current.value = ""}}
+                >
+                  <CloseIcon color={"red.400"} />
+                </InputRightAddon>
               </InputGroup>
             </form>
 
