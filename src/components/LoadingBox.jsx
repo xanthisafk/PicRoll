@@ -40,11 +40,11 @@ const LoadingBox = (props) => {
                 {
                   item.type === "image"  &&
                   <Image
-                  width={"100%"}
-                  src={item.url}
-                  alt={item.title}
-                  title={item.title}
-                  borderRadius={"md"}
+                    width={"100%"}
+                    src={item.url}
+                    alt={item.title}
+                    title={item.title}
+                    borderRadius={"md"}
                 />
                 }
               <ImageInfoPanel submission={item} />

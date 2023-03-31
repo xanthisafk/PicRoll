@@ -7,7 +7,7 @@
 const extractSubredditName = (url) => {
 
     let subredditName = url;
-    if (/(r\/|http|https|www.reddit.com)/.test(url)) {
+    if (/(http|https|www.reddit.com)/.test(url)) {
 
     // extract the subreddit name from the URL using regex
         const regex = /^(?:https?:\/\/)?(?:www\.)?reddit\.com\/r\/(\w+)\/?$|^r\/(\w+)$/i;

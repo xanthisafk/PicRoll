@@ -19,6 +19,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^10.9.2",
     "next": "13.2.4",
+    "node-fetch": "^3.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "snoowrap": "^1.23.0"
