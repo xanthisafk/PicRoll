@@ -25,6 +25,7 @@ import { useRef, useState } from 'react';
 import LoadingBox from '../components/LoadingBox';
 import extractSubredditName from '../lib/extractSubredditName';
 import ScrollToTop from '@/components/ScrollToTop';
+import Footer from '@/components/Footer';
 
 
 export default function Home() {
@@ -115,7 +116,7 @@ export default function Home() {
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main style={{minHeight: "100vh"}}>
         <ScrollToTop />
         <Flex
           height={"15vh"}
@@ -138,7 +139,7 @@ export default function Home() {
               fontSize={"2xl"}
               paddingY={1}
               color={"orange.300"}
-            >PicRoll</Text>
+            >{meta.title}</Text>
           </Box>
 
           <Box
@@ -200,6 +201,7 @@ export default function Home() {
 
         <LoadingBox isLoading={isLoading} data={data} searchSomething={searchSomething} />
       </main>
+      <Footer />
     </>
   )
 }
