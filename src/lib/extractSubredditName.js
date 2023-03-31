@@ -16,6 +16,10 @@ const extractSubredditName = (url) => {
         subredditName = matches[1] || matches[2];
     }
 
+    if (url.startsWith("r/") || url.startsWith("/r/")) {
+        subredditName = url.split("r/")[1]
+    }
+
     return subredditName;
 
 }

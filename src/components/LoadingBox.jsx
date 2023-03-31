@@ -1,19 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, IconButton, Image, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, IconButton, Image, Skeleton, Text, useDisclosure } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
 import ImageInfoPanel from "./ImageInfoPanel";
+import SubredditCard from "./SubredditCard";
+import examples from '../data/exampleSubs.json'
+import meta from '../data/meta.json'
 
 const LoadingBox = (props) => {
   const isLoading = props.isLoading ?? false;
   const data = props.data ?? [];
 
+
   return (
     <>
       {/* Show greeting message when isLoading is false and data is empty */}
       {!isLoading && data.length === 0 &&
-      <Box width={"100%"} justifyContent={"center"} alignItems={"center"}>
-        <Text textAlign={"center"}>Get started by searching for your favourite subreddit.</Text>
-      </Box>}
+      <Flex
+        width={"100%"}
+        height={"70vh"}
+        padding={3}
+        direction={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text textAlign={"center"}>{meta.nothingLoadedText}</Text>
+        <Flex
+          paddingTop={3}
+          flexWrap={"wrap"}
+          justify={"center"}
+          gap={3}
+        >
+          {examples.map((sub, index) => {
+            return (
+              <SubredditCard key={index} data={sub} searchSomething={props.searchSomething} />
+            )
+          })}
+        </Flex>
+      </Flex>}
       
       {/* Show skeleton boxes when isLoading is true and data is empty */}
       {isLoading && (
@@ -38,16 +61,17 @@ const LoadingBox = (props) => {
                 position={"relative"}
               >
                 {
-                  item.type === "image"  &&
+                  item.type === "image" &&
                   <Image
                     width={"100%"}
                     src={item.url}
                     alt={item.title}
-                    title={item.title}
                     borderRadius={"md"}
                 />
                 }
-              <ImageInfoPanel submission={item} />
+              <ImageInfoPanel
+                submission={item}
+              />
               </Box>
           )})}
         </MasonryLayout>

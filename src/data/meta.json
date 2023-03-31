@@ -4,5 +4,6 @@
     "keywords": "%%APPNAME%%, image-fetching web app, subreddit image viewer, visual curation tool, Reddit image scraper, image aggregator, image discovery, subreddit picture finder, web app for images, online image viewer",
     "searchPlaceholder": "subreddit name",
     "searchLeadingText": "r/",
-    "searchButtonText": "Search"
+    "searchButtonText": "Search",
+    "nothingLoadedText": "Get started by searching for your favourite subreddit above or selecting an example subreddit below."
 }

@@ -11,6 +11,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useRef, useState } from 'react';
 import LoadingBox from '../components/LoadingBox';
 import extractSubredditName from '../lib/extractSubredditName';
+import ScrollToTop from '@/components/ScrollToTop';
 
 
 export default function Home() {
@@ -57,6 +58,11 @@ export default function Home() {
 
   }
 
+  const searchSomething = async (subreddit) => {
+    subredditRef.current.value = subreddit;
+    handleClick();
+  }
+
 
   return (
     <>
@@ -79,6 +85,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <ScrollToTop />
         <Flex
           height={"15vh"}
           width={"100%"}
@@ -111,14 +118,14 @@ export default function Home() {
           >
             {/* Search box */}
             <form onSubmit={handleSubmit}>
-            <InputGroup padding={2}>
-              <InputLeftAddon children={meta.searchLeadingText} />
-              <Input
-                ref={subredditRef}
-                variant={'outline'}
-                placeholder={meta.searchPlaceholder}
-              />
-            </InputGroup>
+              <InputGroup padding={2}>
+                <InputLeftAddon children={meta.searchLeadingText} />
+                <Input
+                  ref={subredditRef}
+                  variant={'outline'}
+                  placeholder={meta.searchPlaceholder}
+                />
+              </InputGroup>
             </form>
 
             <Flex direction={"row-reverse"}>
@@ -153,17 +160,7 @@ export default function Home() {
           </Box>
         </Flex>
 
-        <LoadingBox isLoading={isLoading} data={data} />
-
-        {/* <MasonryLayout>
-            <Skeleton h="200px" />
-            <Skeleton h="250px" />
-            <Skeleton h="150px" />
-            <Skeleton h="150px" />
-            <Skeleton h="250px" />
-            <Skeleton h="350px" />
-            Add more grid items here
-          </MasonryLayout> */}
+        <LoadingBox isLoading={isLoading} data={data} searchSomething={searchSomething} />
       </main>
     </>
   )

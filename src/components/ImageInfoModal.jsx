@@ -1,3 +1,5 @@
+import copyToClipboard from '@/lib/copyToClipboard';
+import downloadImage from '@/lib/downloadImage';
 import { ArrowUpIcon, AtSignIcon, ExternalLinkIcon, LinkIcon, TimeIcon } from '@chakra-ui/icons';
 import {
     Modal,
@@ -17,7 +19,7 @@ import {
 import Link from 'next/link';
 import NextLink from 'next/link'
 
-const ImageInfoModal = ({ isOpen, onClose, data }) => {
+const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
     const { title, url, permalink, upvoteRatio, createdAt, author, upvotes } = data;
 
     const date = new Date(createdAt * 1000); // create Date object from UTC date string
@@ -36,6 +38,7 @@ const ImageInfoModal = ({ isOpen, onClose, data }) => {
                 
                 <ModalBody>
                     <Flex justify={"center"} direction={{base: 'column', md: 'row', lg: 'row'}}>
+                        
                         <Image
                             src={url}
                             alt={title}
@@ -43,28 +46,49 @@ const ImageInfoModal = ({ isOpen, onClose, data }) => {
                             borderRadius={"md"}
                         />
                         <Box p={4}>
+                            {/* Title */}
                             <Text fontSize={"3xl"} color={"#ff4500"}>{title}</Text>
+
+                            {/* Upvotes */}
                             <Text fontSize={"md"}>
                                 <ArrowUpIcon color={"#ff4500"} /> {`${upvotes} (${upvoteRatio * 100}%)`}</Text>
+
+                            {/* Author */}
                             <Text fontSize={"md"}> <AtSignIcon /> {author}</Text>
+
+                            {/* Created At */}
                             <Text fontSize={"md"}> <TimeIcon /> {formattedDate} </Text>
+
+                            {/* Image permalink */}
                             <Text fontSize={"md"}>
                                 <LinkIcon /> <Link
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href={url}
                                 > {host} <ExternalLinkIcon /> </Link></Text>
-                            <HStack marginY={2}>
-                                <Button>Download</Button>
-                                <Button
 
+                            {/* Button Stack */}
+                            <HStack marginY={2}>
+
+                                {/* Download */}
+                                <Button colorScheme='orange'
+                                    onClick={() => downloadImage(url, setter, toast)}
+                                >Download</Button>
+
+                                {/* Copy to clipboard */}
+                                <Button colorScheme='orange'
+                                    onClick={() => copyToClipboard(url, setter, toast)}
                                 >Copy link</Button>
+
+                                {/* Reddit permalink */}
                                 <Link
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href={permalink}
-                                ><Button>Open in Reddit <ExternalLinkIcon /></Button></Link>
-                                <Button onClick={onClose}>Close</Button>
+                                ><Button colorScheme='orange'>Open in Reddit <ExternalLinkIcon /></Button></Link>
+
+                                {/* Close modal */}
+                                <Button onClick={onClose} colorScheme='red'>Close</Button>
                             </HStack>
                         </Box>
                     </Flex>
