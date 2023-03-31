@@ -1,5 +1,5 @@
-import getSubmission from "../../../../../../lib/getSubmissions";
-import getMediaSubmissions from "../../../../../../lib/getMediaSubmissions";
+import getSubmission from "../../../../../lib/getSubmissions";
+import getMediaSubmissions from "../../../../../lib/getMediaSubmissions";
 
 export default async  function handler(req, res) {
     const { subreddit, sort } = req.query;

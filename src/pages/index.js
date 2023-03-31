@@ -1,15 +1,16 @@
 /* eslint-disable react/no-children-prop */
 import Head from 'next/head'
 import Image from 'next/image'
-import meta from '../../data/meta.json'
-import sort from '../../data/sort.json'
+import meta from '../data/meta.json'
+
+import sort from '../data/sort.json'
 import { Box, Button, Flex, IconButton, Input, InputGroup, InputLeftAddon, Select, Skeleton, Text, useColorMode } from '@chakra-ui/react';
 import logo from '../../public/logo.jpg'
 import "@fontsource/fasthand"
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useRef, useState } from 'react';
-import LoadingBox from '../../components/LoadingBox';
-import extractSubredditName from '../../lib/extractSubredditName';
+import LoadingBox from '../components/LoadingBox';
+import extractSubredditName from '../lib/extractSubredditName';
 
 
 export default function Home() {
@@ -106,6 +107,7 @@ export default function Home() {
             flexGrow={1}
             height={"100%"}
             paddingY={3}
+            paddingRight={3}
           >
             {/* Search box */}
             <form onSubmit={handleSubmit}>

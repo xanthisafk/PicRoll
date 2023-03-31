@@ -1,0 +1,8 @@
+.image-info-panel {
+    opacity: 0;
+    transition: .2s ease-in-out;
+}
+
+.image-box:hover .image-info-panel {
+    opacity: 1;
+}

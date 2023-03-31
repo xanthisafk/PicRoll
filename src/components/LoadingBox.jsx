@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Skeleton, Text } from "@chakra-ui/react";
+import { Box, IconButton, Image, Skeleton, Text } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
+import ImageInfoPanel from "./ImageInfoPanel";
 
 const LoadingBox = (props) => {
   const isLoading = props.isLoading ?? false;
@@ -17,23 +18,38 @@ const LoadingBox = (props) => {
       {/* Show skeleton boxes when isLoading is true and data is empty */}
       {isLoading && (
         <MasonryLayout>
-          <Skeleton height="50px" my="10px" />
-          <Skeleton height="60px" my="10px" />
-          <Skeleton height="20px" my="10px" />
+          <Skeleton height="60vh" my="10px" />
+          <Skeleton height="40vh" my="10px" />
+          <Skeleton height="55vh" my="10px" />
         </MasonryLayout>
       )}
       
       {/* Show data when isLoading is false and data is not empty */}
       {!isLoading && data.length > 0 && (
         <MasonryLayout>
-          {data.map((item, key) => (
-              <img
+          {data.map((item, key) => {
+            return (
+              <Box
                 key={key}
-                src={item.url}
-                alt={item.title}
-                title={item.title}
-              />
-          ))}
+                className={"image-box"}
+                width={"100%"}
+                mb={2}
+                d={"inline-block"}
+                position={"relative"}
+              >
+                {
+                  item.type === "image"  &&
+                  <Image
+                  width={"100%"}
+                  src={item.url}
+                  alt={item.title}
+                  title={item.title}
+                  borderRadius={"md"}
+                />
+                }
+              <ImageInfoPanel submission={item} />
+              </Box>
+          )})}
         </MasonryLayout>
       )}
     </>
