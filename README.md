@@ -114,8 +114,6 @@ Enter a short description of your app. This is also not visible to Reddit users.
 
 If everything went right, your app would be running on [http://localhost:3000](http://localhost:3000)
 
-
-
 ## Using the app
 
 - Enter subreddit name into the input box on top.
