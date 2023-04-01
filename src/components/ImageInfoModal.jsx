@@ -1,6 +1,12 @@
 import copyToClipboard from '@/lib/copyToClipboard';
 import downloadImage from '@/lib/downloadImage';
-import { ArrowUpIcon, AtSignIcon, ExternalLinkIcon, LinkIcon, TimeIcon } from '@chakra-ui/icons';
+import {
+    ArrowUpIcon,
+    AtSignIcon,
+    ExternalLinkIcon,
+    LinkIcon,
+    TimeIcon
+} from '@chakra-ui/icons';
 import {
     Modal,
     ModalOverlay,
@@ -12,12 +18,10 @@ import {
     Flex,
     Box,
     Text,
-    useColorMode,
     Button,
     HStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import NextLink from 'next/link'
 
 const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
     const { title, url, permalink, upvoteRatio, createdAt, author, upvotes } = data;
@@ -66,6 +70,7 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
                             {/* Image permalink */}
                             <Text fontSize={"md"}>
                                 <LinkIcon /> <Link
+                                    aria-label='open image in new tab'
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href={url}
@@ -76,23 +81,29 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
 
                                 {/* Download */}
                                 <Button colorScheme='orange'
+                                    aria-label="download image"
                                     onClick={() => downloadImage(url, setter, toast)}
                                 >Download</Button>
 
                                 {/* Copy to clipboard */}
                                 <Button colorScheme='orange'
+                                    aria-label="copy link to image"
                                     onClick={() => copyToClipboard(url, setter, toast)}
                                 >Copy link</Button>
 
                                 {/* Reddit permalink */}
                                 <Link
+                                    aria-label='open submission on reddit'
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href={permalink}
                                 ><Button colorScheme='orange'>Open in Reddit <ExternalLinkIcon /></Button></Link>
 
                                 {/* Close modal */}
-                                <Button onClick={onClose} colorScheme='red'>Close</Button>
+                                <Button
+                                    aria-label='close popup'
+                                    onClick={onClose}
+                                    colorScheme='red'>Close</Button>
                             </HStack>
                         </Box>
                     </Flex>

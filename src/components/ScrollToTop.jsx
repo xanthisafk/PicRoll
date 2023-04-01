@@ -36,6 +36,7 @@ const ScrollToTop = () => {
           right={6}
           zIndex={3}>
           <IconButton
+            aria-label="scroll to top"
             icon={<ArrowUpIcon />}
             colorScheme='orange'
         />

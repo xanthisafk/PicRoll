@@ -48,6 +48,7 @@ export default function Home() {
     event.preventDefault();
     handleClick();
   }
+
   /**
   * Sets the loading state to true, calls fetchHandler, and then sets the loading state to false
   */
@@ -57,16 +58,28 @@ export default function Home() {
     setLoading(() => false);
   }
 
-  const toastErrorMessage = ({message}) => {
+  /**
+  * Function to display an error toast message
+  * @param {object} options - The options for the error toast message.
+  * @param {string} options.message - The error message to be displayed.
+  * @param {number} options.duration - The duration of the toast message.
+  * @param {boolean} options.isClosable - Whether the toast message is closable or not.
+  * @returns {void}
+  */
+  const toastErrorMessage = ({ message, duration = 9000, isClosable = true }) => {
     toast({
       status: "error",
       title: "error",
       description: message,
-      duration: 9000,
-      isClosable: true
+      duration,
+      isClosable
     })
   }
 
+  /**
+   * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
+   * @returns {Promise<void>}
+   */
   const fetchHandler = async () => {
     const subreddit = extractSubredditName(subredditRef.current.value);
     if (!subreddit) { return alert("You did not enter a subreddit.") }
@@ -81,20 +94,23 @@ export default function Home() {
       })
       .catch(console.error)
 
-      if (error) {
-        toastErrorMessage(data);
-      } else {
-        setData(() => data);
-        setSiteTitle(() => `${subreddit} - ${meta.title}`)
-      }
-
+    if (error) {
+      toastErrorMessage(data);
+    } else {
+      setData(() => data);
+      setSiteTitle(() => `${subreddit} - ${meta.title}`)
+    }
   }
 
+  /**
+  * Searches for a subreddit and triggers the handle click event with the subreddit value
+  * @param {string} subreddit - The subreddit to search for
+  * @returns {Promise<void>}
+  */
   const searchSomething = async (subreddit) => {
     subredditRef.current.value = subreddit;
     handleClick();
   }
-
 
   return (
     <>
@@ -103,6 +119,8 @@ export default function Home() {
         <meta name="description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
         <meta name="keywords" content={meta.keywords.replace("%%APPNAME%%", meta.title)} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="icons/icon-512x512.png"></link>
 
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
@@ -116,7 +134,7 @@ export default function Home() {
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main style={{minHeight: "100vh"}}>
+      <main style={{ minHeight: "100vh" }}>
         <ScrollToTop />
         <Flex
           height={"15vh"}
@@ -132,7 +150,7 @@ export default function Home() {
             onClick={() => window.location = "/"}
             cursor={"pointer"}
           >
-            <Image src={logo} alt="logo of website" />
+            <Image priority src={logo} alt="logo of website" />
             <Text
               textAlign={"center"}
               fontFamily={`"Fasthand", cursive`}
@@ -160,7 +178,7 @@ export default function Home() {
                 <InputRightAddon
                   cursor={"pointer"}
                   title={"Clear input"}
-                  onClick={() => {subredditRef.current.value = ""}}
+                  onClick={() => { subredditRef.current.value = "" }}
                 >
                   <CloseIcon color={"red.400"} />
                 </InputRightAddon>
@@ -173,6 +191,7 @@ export default function Home() {
                 margin={2}
                 colorScheme={"orange"}
                 onClick={handleClick}
+                aria-label='search'
               >{meta.searchButtonText}</Button>
 
               {/* Sort Select */}
@@ -189,6 +208,7 @@ export default function Home() {
               <IconButton
                 margin={2}
                 onClick={toggleColorMode}
+                aria-label='toggle theme'
                 icon={
                   colorMode === 'dark' ? <SunIcon color={"orange.400"} /> : <MoonIcon color={"blue.200"} />
                 }

@@ -27,6 +27,7 @@ function SubredditCard({ data, searchSomething }) {
                             _hover={{
                                 textDecoration: 'underline'
                             }}
+                            aria-label={`load ${sub.text} example`}
                             onClick={() => searchSomething(sub.value)}
                         >{sub.text}</Text>
                     )

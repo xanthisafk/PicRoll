@@ -41,21 +41,25 @@ function ImageInfoPanel({ submission }) {
 
             <HStack>
                 <IconButton
+                    aria-label="open image information popup"
                     icon={<InfoOutlineIcon />}
                     colorScheme="orange"
                     onClick={onOpen}
                 />
                 <IconButton
+                    aria-label="open submission on reddit in new tab"
                     icon={<ExternalLinkIcon />}
                     colorScheme="orange"
                     onClick={() => window.open(submission.permalink)}
                 />
                 <IconButton
+                    aria-label="copy image url"
                     icon={copied ? <CheckIcon color={'green.300'} /> : <CopyIcon />}
                     colorScheme="orange"
                     onClick={() => copyToClipboard(submission.url, setCopied, toast)}
                 />
                 <IconButton
+                    aria-label="download image"
                     icon={downloaded ? <CheckIcon color={'green.300'} /> : <DownloadIcon />}
                     colorScheme="orange"
                     onClick={() => downloadImage(submission.url, setDownloaded, toast)}
