@@ -1,38 +1,141 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img src="./public/logo.jpg" width="100"> 
 
-## Getting Started
+# PicRoll
 
-First, run the development server:
+PicRoll is a web app that allows users to search for and view images from Reddit. It was built using React and Next.js.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+[This website is live!]("https://pichost.vercel.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+#### Table of contents
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- [Online app](#online-app)
+- [Running locally](#running-locally)
+    - [Creating Reddit App](#creating-reddit-app)
+    - [First start](#first-start)
+    - [Conclusion](#conclusion)
+- [Using the app](#using-the-app)
+- [Future features](#future-features)
+- [Why](#why)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Online app
+You can go to [https://picroll.vercel.app](https://picroll.vercel.app) to use this app without any setup.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Running locally
 
-## Learn More
+### Creating Reddit App
 
-To learn more about Next.js, take a look at the following resources:
+1. Go to the Reddit apps page [Reddit prefs page](https://www.reddit.com/prefs/apps) and log in to your Reddit account.
+2. Click on the `create app` or `create another app` button, depending on whether you have created an app before.
+3. Select the app type you want to create - `script`. This is the only type that works without OAuth.
+4. Give your app a name that will help you identify it later. This name is not visible to Reddit users.
+Enter a short description of your app. This is also not visible to Reddit users.
+5. In the `about url` field, enter the URL of your website or a page that provides more information about your app.
+6. In the `redirect uri` field, enter the URL where Reddit should redirect users after they authorize your app. For example, if your app is hosted at `https://www.example.com`, you would enter `https://www.example.com/`. If you do not have a public web app, you can enter `https://localhost:3000`.
+8. Click on the `create app` button to create your app.
+9. Copy the `client id` and `client secret` values from the app details page. You will need these values along with your username and pasword to authenticate your app and make API calls to Reddit.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### First Start
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Clone the repository
+    ```bash
+    git clone https://github.com/xanthisafk/PicRoll.git
+    ```
 
-## Deploy on Vercel
+2. Update environment variables
+    
+    Create a `.env.local` file in the root of project
+    ```bash
+    cd PicRoll
+    touch .env.local
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Edit `.env.local` and add this
+    ```env
+    REDDIT_USERNAME=Your username
+    REDDIT_PASSWORD=Your password
+    REDDIT_USER_AGENT="PicRoll/v2" # or whatever user-agent you want
+    REDDIT_CLIENT_ID=Your client id that you created earlier 
+    REDDIT_CLIENT_SECRET=Your client secret that you created earlier
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Install dependencies
+    
+    Using Yarn
+    ```bash
+    yarn install
+    ```
+
+    Using NPM
+    ```bash
+    npm install
+    ```
+
+4. Build (Optional)
+
+    If you don't plan to change source code, it is highly recommended that you do this step.
+
+    Using Yarn
+    ```bash
+    yarn build
+    ```
+
+    Using NPM
+    ```bash
+    npm run build
+    ```
+
+5. Run
+
+    - If you skipped step 4
+
+        Using Yarn
+        ```bash
+        yarn dev
+        ```
+
+        Using NPM
+        ```bash
+        npm run dev
+        ```
+    - If you did step 4
+        Using Yarn
+        ```bash
+        yarn start
+        ```
+
+        Using NPM
+        ```bash
+        npm start
+        ```
+
+### Conclusion
+
+If everything went right, your app would be running on [http://localhost:3000](http://localhost:3000)
+
+
+
+## Using the app
+
+- Enter subreddit name into the input box on top.
+    - You can enter whole url e.g.; `https://www.reddit.com/r/xanthis/` just the short name e.g.; `r/xanthis` or just the name e.g.; `xanthis`.
+- Select a sort option.
+- Click `search`.
+
+
+_Currently there is an issue where image keeps changing their position in grid while they load._
+
+
+## Future features
+
+- [x] Masonry grid
+- [ ] Infinte scroll
+- [ ] NSFW detection
+- [ ] More customizability
+- [ ] Better layout
+
+
+## Why
+
+Recently I bought a new phone and was looking through [r/wallpaper](https://www.reddit.com/r/wallpaper) for a new wallpaper. After opening only a few posts my PC started slowing down (I don't have a state of the art PC), so I reloaded the page. But after a few posts, it got slow again. So I decided to make a super simple image aggregator, which then I showed to my friends and they liked it too so I decided to turn it into this.
