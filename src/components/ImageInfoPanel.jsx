@@ -18,11 +18,13 @@ import ImageInfoModal from './ImageInfoModal';
 import copyToClipboard from '@/lib/copyToClipboard';
 import downloadImage from '@/lib/downloadImage';
 
-function ImageInfoPanel({ submission }) {
+import { getColorScheme } from '../lib/colorSchemeHandler'
+
+function ImageInfoPanel({ submission, onOpen, isOpen, onClose, photo }) {
     const [copied, setCopied] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
     const toast = useToast();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const colorScheme = getColorScheme();
     return (
         <Box
             className={"image-info-panel"}
@@ -33,6 +35,7 @@ function ImageInfoPanel({ submission }) {
         >
             <ImageInfoModal
                 data={submission}
+                photo={photo}
                 isOpen={isOpen}
                 onClose={onClose}
                 setter={setDownloaded}
@@ -43,26 +46,26 @@ function ImageInfoPanel({ submission }) {
                 <IconButton
                     aria-label="open image information popup"
                     icon={<InfoOutlineIcon />}
-                    colorScheme="orange"
+                    colorScheme={colorScheme}
                     onClick={onOpen}
                 />
                 <IconButton
                     aria-label="open submission on reddit in new tab"
                     icon={<ExternalLinkIcon />}
-                    colorScheme="orange"
+                    colorScheme={colorScheme}
                     onClick={() => window.open(submission.permalink)}
                 />
                 <IconButton
                     aria-label="copy image url"
                     icon={copied ? <CheckIcon color={'green.300'} /> : <CopyIcon />}
-                    colorScheme="orange"
-                    onClick={() => copyToClipboard(submission.url, setCopied, toast)}
+                    colorScheme={colorScheme}
+                    onClick={() => copyToClipboard(photo, setCopied, toast)}
                 />
                 <IconButton
                     aria-label="download image"
                     icon={downloaded ? <CheckIcon color={'green.300'} /> : <DownloadIcon />}
-                    colorScheme="orange"
-                    onClick={() => downloadImage(submission.url, setDownloaded, toast)}
+                    colorScheme={colorScheme}
+                    onClick={() => downloadImage(photo, setDownloaded, toast)}
                 />
             </HStack>
         </Box>

@@ -24,8 +24,11 @@ import { CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useRef, useState } from 'react';
 import LoadingBox from '../components/LoadingBox';
 import extractSubredditName from '../lib/extractSubredditName';
+import { getColorScheme } from '../lib/colorSchemeHandler'
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
+import UrlGenerator from '@/lib/UrlGenerator';
+import { handleClientRequest } from '@/lib/handleClientRequest';
 
 
 export default function Home() {
@@ -37,8 +40,11 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [siteTitle, setSiteTitle] = useState(meta.title)
   const [data, setData] = useState([]);
+  const [after, setAfter] = useState("");
 
   const toast = useToast();
+
+  const colorScheme = getColorScheme();
 
   /**
  * Handles the form submission event by preventing the default behavior and calling the handleClick function.
@@ -76,6 +82,8 @@ export default function Home() {
     })
   }
 
+  const topSort = ["new", "hot", "hour", "day", "week", "month", "year", "all"]
+
   /**
    * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
    * @returns {Promise<void>}
@@ -83,21 +91,24 @@ export default function Home() {
   const fetchHandler = async () => {
     const subreddit = extractSubredditName(subredditRef.current.value);
     if (!subreddit) { return alert("You did not enter a subreddit.") }
-    const sort = sortRef.current.value;
+    let sort = sortRef.current.value;
+    let time = "all"
 
-    let error = false;
-    const data = await fetch(`/api/v1/get_images/${subreddit}/${sort}`)
-      .then(res => res.json())
-      .then(res => {
-        error = res.error;
-        return res.data;
-      })
-      .catch(console.error)
+    if (topSort.includes(sort)) {
+      time = sort;
+      sort = "top"
+    }
 
-    if (error) {
-      toastErrorMessage(data);
+    const url = UrlGenerator(subreddit, sort, time);
+    const data = await handleClientRequest(url)
+    
+
+    if (data.error) {
+      toastErrorMessage(data.data);
+      setSiteTitle(() => `${meta.title}`)
     } else {
-      setData(() => data);
+      setAfter(() => data.after);
+      setData(() => data.data.posts);
       setSiteTitle(() => `${subreddit} - ${meta.title}`)
     }
   }
@@ -156,7 +167,7 @@ export default function Home() {
               fontFamily={`"Fasthand", cursive`}
               fontSize={"2xl"}
               paddingY={1}
-              color={"orange.300"}
+              color={`${colorScheme}.300`}
             >{meta.title}</Text>
           </Box>
 
@@ -189,7 +200,7 @@ export default function Home() {
               {/* Search button */}
               <Button
                 margin={2}
-                colorScheme={"orange"}
+                colorScheme={colorScheme}
                 onClick={handleClick}
                 aria-label='search'
               >{meta.searchButtonText}</Button>

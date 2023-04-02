@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
+import { getColorScheme } from '../lib/colorSchemeHandler'
+
 import meta from '../data/meta.json';
 import footer from '../data/footer.json';
 import logo from '../../public/logo.jpg';
@@ -17,6 +19,8 @@ import logo from '../../public/logo.jpg';
 function Footer() {
     const linkColor = useColorModeValue('gray.900', 'gray.100');
     const hoverColor = useColorModeValue('gray.700', 'gray.300');
+
+    const colorScheme = getColorScheme();
 
     const openUrl = (url) => window.open(url);
 
@@ -35,7 +39,7 @@ function Footer() {
             <Box padding={5}>
                 <Text
                     fontSize="6xl"
-                    color="orange.300"
+                    color={`${colorScheme}.300`}
                     fontFamily={`"Fasthand", cursive`}
                 >
                     {meta.title}

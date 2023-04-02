@@ -1,6 +1,7 @@
 {
     "title": "PicRoll",
     "description": "Discover the visual treasures of your favorite subreddit with PicHost - the ultimate image-fetching web app. Effortlessly browse and enjoy stunning images curated from the subreddit of your choice. Try %%APPNAME%% today!",
+    "defaultColorScheme": "orange",
     "keywords": "%%APPNAME%%, image-fetching web app, subreddit image viewer, visual curation tool, Reddit image scraper, image aggregator, image discovery, subreddit picture finder, web app for images, online image viewer",
     "searchPlaceholder": "subreddit name",
     "searchLeadingText": "r/",

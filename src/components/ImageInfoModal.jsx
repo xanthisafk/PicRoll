@@ -23,14 +23,21 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
-const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
-    const { title, url, permalink, upvoteRatio, createdAt, author, upvotes } = data;
+import { getColorScheme } from '../lib/colorSchemeHandler'
 
-    const date = new Date(createdAt * 1000); // create Date object from UTC date string
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }; // formatting options
-    const formattedDate = date.toLocaleDateString('en-US', options); // convert to human-readable format
+const ImageInfoModal = ({ isOpen, onClose, data, setter, toast, photo }) => {
+    const { title, domain, permalink, upvote_ratio, created, author, upvotes } = data;
 
-    const host = new URL(url).hostname;
+    // create Date object from UTC date string
+    const date = new Date(created * 1000);
+
+    // formatting options
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+
+     // convert to human-readable format
+    const formattedDate = date.toLocaleDateString('en-US', options); 
+
+    const colorScheme = getColorScheme();
 
     return (
         <Modal isCentered isOpen={isOpen} onClose={onClose} size={"full"}>
@@ -46,49 +53,48 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
                         height={"80vh"}
                         direction={{base: 'column', md: 'row', lg: 'row'}}>
                         <Image
-                            src={url}
+                            src={photo}
                             alt={title}
-                            // maxH={{base: '60vh', md: '70vh', lg: '90vh'}}
                             maxW={"50vw"}
                             objectFit={"contain"}
                             borderRadius={"md"}
                         />
                         <Box p={4}>
                             {/* Title */}
-                            <Text fontSize={"3xl"} color={"#ff4500"}>{title}</Text>
+                            <Text fontSize={"3xl"} color={`${colorScheme}.300`}>{title}</Text>
 
                             {/* Upvotes */}
                             <Text fontSize={"md"}>
-                                <ArrowUpIcon color={"#ff4500"} /> {`${upvotes} (${upvoteRatio * 100}%)`}</Text>
+                                <ArrowUpIcon color={`${colorScheme}.300`} /> {`${upvotes} (${upvote_ratio * 100}%)`}</Text>
 
                             {/* Author */}
-                            <Text fontSize={"md"}> <AtSignIcon /> {author}</Text>
+                            <Text fontSize={"md"}> <AtSignIcon  color={`${colorScheme}.300`} /> {author}</Text>
 
                             {/* Created At */}
-                            <Text fontSize={"md"}> <TimeIcon /> {formattedDate} </Text>
+                            <Text fontSize={"md"}> <TimeIcon color={`${colorScheme}.300`} /> {formattedDate} </Text>
 
                             {/* Image permalink */}
                             <Text fontSize={"md"}>
-                                <LinkIcon /> <Link
+                                <LinkIcon color={`${colorScheme}.300`} /> <Link
                                     aria-label='open image in new tab'
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    href={url}
-                                > {host} <ExternalLinkIcon /> </Link></Text>
+                                    href={photo}
+                                > {domain} <ExternalLinkIcon color={`${colorScheme}.300`} /> </Link></Text>
 
                             {/* Button Stack */}
                             <HStack marginY={2}>
 
                                 {/* Download */}
-                                <Button colorScheme='orange'
+                                <Button colorScheme={colorScheme}
                                     aria-label="download image"
-                                    onClick={() => downloadImage(url, setter, toast)}
+                                    onClick={() => downloadImage(photo, setter, toast)}
                                 >Download</Button>
 
                                 {/* Copy to clipboard */}
-                                <Button colorScheme='orange'
+                                <Button colorScheme={colorScheme}
                                     aria-label="copy link to image"
-                                    onClick={() => copyToClipboard(url, setter, toast)}
+                                    onClick={() => copyToClipboard(photo, setter, toast)}
                                 >Copy link</Button>
 
                                 {/* Reddit permalink */}
@@ -97,13 +103,13 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast }) => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href={permalink}
-                                ><Button colorScheme='orange'>Open in Reddit <ExternalLinkIcon /></Button></Link>
+                                ><Button colorScheme={colorScheme}>Open in Reddit <ExternalLinkIcon /></Button></Link>
 
                                 {/* Close modal */}
                                 <Button
                                     aria-label='close popup'
                                     onClick={onClose}
-                                    colorScheme='red'>Close</Button>
+                                    colorScheme={colorScheme === 'red' ? 'orange' : 'red'}>Close</Button>
                             </HStack>
                         </Box>
                     </Flex>

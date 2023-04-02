@@ -10,10 +10,10 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
-import ImageInfoPanel from "./ImageInfoPanel";
 import SubredditCard from "./SubredditCard";
 import examples from "../data/exampleSubs.json";
 import meta from "../data/meta.json";
+import Images from "./Images";
 
 const LoadingBox = (props) => {
   const isLoading = props.isLoading ?? false;
@@ -62,27 +62,12 @@ const LoadingBox = (props) => {
       {/* Show data when isLoading is false and data is not empty */}
       {!isLoading && data.length > 0 && (
         <MasonryLayout>
-          {data.map((item, key) => {
-            return (
-              <Box
-                key={key}
-                className={"image-box"}
-                width={"100%"}
-                mb={2}
-                d={"inline-block"}
-                position={"relative"}
-              >
-                {item.type === "image" && (
-                  <Image
-                    width={"100%"}
-                    src={item.url}
-                    alt={item.title}
-                    borderRadius={"md"}
-                  />
-                )}
-                <ImageInfoPanel submission={item} />
-              </Box>
-            );
+          {data.map((item, key1) => {
+            return item.images.map((image, key2) => {
+              return (
+                <Images key={`${key1}${key2}`} item={item} photo={image} />
+              );
+            })
           })}
         </MasonryLayout>
       )}

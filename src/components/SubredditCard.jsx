@@ -1,16 +1,18 @@
 import { Card, CardBody, CardHeader, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
+import { getColorScheme } from '../lib/colorSchemeHandler'
 
 function SubredditCard({ data, searchSomething }) {
     const { title, subs } = data;
+    const colorScheme = getColorScheme();
   return (
     <Card>
         <CardHeader>
             <Text
                 textAlign={"center"}
                 fontWeight={"bold"}
-                color={"#ff4500"}
+                color={`${colorScheme}.300`}
                 fontSize={"lg"}
             >{title}</Text>
             <Divider />

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { ArrowUpIcon } from '@chakra-ui/icons';
 import { Box, IconButton } from '@chakra-ui/react';
 
+import { getColorScheme } from '../lib/colorSchemeHandler'
+
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+
+  const colorScheme = getColorScheme();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -38,7 +42,7 @@ const ScrollToTop = () => {
           <IconButton
             aria-label="scroll to top"
             icon={<ArrowUpIcon />}
-            colorScheme='orange'
+            colorScheme={colorScheme}
         />
         </Box>
       )}

@@ -25,11 +25,8 @@ const buildErrorMessage = (message, statusCode) => {
  */
 const getSubmission = async (subreddit, sortType) => {
 
-  // Try to extract each image into its own components
-  // That might help with modal problem
-
   const options = {
-    limit: 100,
+    limit: 10,
     time: sortType
   };
 
