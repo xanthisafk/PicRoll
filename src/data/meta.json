@@ -1,10 +1,19 @@
 {
     "title": "PicRoll v2.1",
-    "description": "Discover the visual treasures of your favorite subreddit with PicHost - the ultimate image-fetching web app. Effortlessly browse and enjoy stunning images curated from the subreddit of your choice. Try %%APPNAME%% today!",
+    "description": "Discover the visual treasures of your favorite subreddit with %%APPNAME%% - the ultimate image-fetching web app. Effortlessly browse and enjoy stunning images curated from the subreddit of your choice. Try %%APPNAME%% today!",
     "defaultColorScheme": "orange",
     "keywords": "%%APPNAME%%, image-fetching web app, subreddit image viewer, visual curation tool, Reddit image scraper, image aggregator, image discovery, subreddit picture finder, web app for images, online image viewer",
     "searchPlaceholder": "subreddit name",
     "searchLeadingText": "r/",
     "searchButtonText": "Search",
-    "nothingLoadedText": "Get started by searching for your favourite subreddit above or selecting an example subreddit below."
+    "nothingLoadedText": "Get started by searching for your favourite subreddit above or selecting an example subreddit below.",
+    "scrollToTopText": "Scroll to top",
+    "viewInfoButtonText": "View image info",
+    "externalButtonText": "Open in Reddit",
+    "copyLinkButtonText": "Copy image link",
+    "downloadButtonText": "Download image",
+    "upvoteIconText": "Upvotes",
+    "authorIconText": "Submission by",
+    "submitIconText": "Submitted on",
+    "linkIconText": "Open image in new tab"
 }

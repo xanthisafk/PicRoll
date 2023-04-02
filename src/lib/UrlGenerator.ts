@@ -4,9 +4,10 @@ type Time = "all" | "month" | "week" | "day" | "hour"
 const UrlGenerator = (
     subreddit: string,
     sort: Sort,
+    time: Time,
     limit: number = 25,
-    time: Time = "all",
-    after: string = "") => {
+    after: string = ""
+) => {
     return `https://www.reddit.com/r/${subreddit}/${sort}.json?t=${time}&limit=${limit}&after=${after}`
 }
 

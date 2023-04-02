@@ -1,8 +1,15 @@
+:root {
+    --image-border: 8px;
+}
+
 .image-info-panel {
     opacity: 0;
     transition: .2s ease-in-out;
 }
 
-.image-box:hover .image-info-panel {
-    opacity: 1;
+
+@media screen and (min-width: 900px) {
+    .image-box:hover .image-info-panel {
+        opacity: 1;
+    }
 }

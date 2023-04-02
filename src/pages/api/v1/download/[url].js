@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   const imageResponse = await fetch(imageUrl);
 
   // Get the image data as a buffer
-  const imageData = await imageResponse.buffer();
+  const imageData = Buffer.from(await imageResponse.arrayBuffer());
 
   // Set the response headers to force a download
   res.setHeader('Content-Type', 'image/jpeg');

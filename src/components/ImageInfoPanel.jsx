@@ -10,13 +10,14 @@ import {
     Box,
     HStack,
     IconButton,
-    useDisclosure,
     useToast
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import ImageInfoModal from './ImageInfoModal';
 import copyToClipboard from '@/lib/copyToClipboard';
 import downloadImage from '@/lib/downloadImage';
+
+import meta from '../data/meta.json'
 
 import { getColorScheme } from '../lib/colorSchemeHandler'
 
@@ -31,6 +32,7 @@ function ImageInfoPanel({ submission, onOpen, isOpen, onClose, photo }) {
             position={"absolute"}
             top={1}
             right={1}
+            padding={2}
             transition={".2s ease-in-out"}
         >
             <ImageInfoModal
@@ -44,25 +46,29 @@ function ImageInfoPanel({ submission, onOpen, isOpen, onClose, photo }) {
 
             <HStack>
                 <IconButton
-                    aria-label="open image information popup"
+                    aria-label={meta.viewInfoButtonText}
+                    title={meta.viewInfoButtonText}
                     icon={<InfoOutlineIcon />}
                     colorScheme={colorScheme}
                     onClick={onOpen}
                 />
                 <IconButton
-                    aria-label="open submission on reddit in new tab"
+                    aria-label={meta.externalButtonText}
+                    title={meta.externalButtonText}
                     icon={<ExternalLinkIcon />}
                     colorScheme={colorScheme}
                     onClick={() => window.open(submission.permalink)}
                 />
                 <IconButton
-                    aria-label="copy image url"
+                    aria-label={meta.copyLinkButtonText}
+                    title={meta.copyLinkButtonText}
                     icon={copied ? <CheckIcon color={'green.300'} /> : <CopyIcon />}
                     colorScheme={colorScheme}
                     onClick={() => copyToClipboard(photo, setCopied, toast)}
                 />
                 <IconButton
-                    aria-label="download image"
+                    aria-label={meta.downloadButtonText}
+                    title={meta.downloadButtonText}
                     icon={downloaded ? <CheckIcon color={'green.300'} /> : <DownloadIcon />}
                     colorScheme={colorScheme}
                     onClick={() => downloadImage(photo, setDownloaded, toast)}

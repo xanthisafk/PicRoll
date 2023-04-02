@@ -27,8 +27,9 @@ import extractSubredditName from '../lib/extractSubredditName';
 import { getColorScheme } from '../lib/colorSchemeHandler'
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
-import UrlGenerator from '@/lib/UrlGenerator';
+
 import { handleClientRequest } from '@/lib/handleClientRequest';
+import { toastErrorMessage } from '@/lib/toastErrorMessage';
 
 
 export default function Home() {
@@ -64,25 +65,7 @@ export default function Home() {
     setLoading(() => false);
   }
 
-  /**
-  * Function to display an error toast message
-  * @param {object} options - The options for the error toast message.
-  * @param {string} options.message - The error message to be displayed.
-  * @param {number} options.duration - The duration of the toast message.
-  * @param {boolean} options.isClosable - Whether the toast message is closable or not.
-  * @returns {void}
-  */
-  const toastErrorMessage = ({ message, duration = 9000, isClosable = true }) => {
-    toast({
-      status: "error",
-      title: "error",
-      description: message,
-      duration,
-      isClosable
-    })
-  }
-
-  const topSort = ["new", "hot", "hour", "day", "week", "month", "year", "all"]
+  
 
   /**
    * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
@@ -92,19 +75,11 @@ export default function Home() {
     const subreddit = extractSubredditName(subredditRef.current.value);
     if (!subreddit) { return alert("You did not enter a subreddit.") }
     let sort = sortRef.current.value;
-    let time = "all"
 
-    if (topSort.includes(sort)) {
-      time = sort;
-      sort = "top"
-    }
-
-    const url = UrlGenerator(subreddit, sort, time);
-    const data = await handleClientRequest(url)
-    
+    const data = await handleClientRequest(subreddit, sort)
 
     if (data.error) {
-      toastErrorMessage(data.data);
+      toastErrorMessage(data.data, toast);
       setSiteTitle(() => `${meta.title}`)
     } else {
       setAfter(() => data.after);

@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
+import meta from '../data/meta.json'
 import { getColorScheme } from '../lib/colorSchemeHandler'
 
 const ImageInfoModal = ({ isOpen, onClose, data, setter, toast, photo }) => {
