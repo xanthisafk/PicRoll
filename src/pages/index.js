@@ -30,6 +30,9 @@ import Footer from '@/components/Footer';
 
 import { handleClientRequest } from '@/lib/handleClientRequest';
 import { toastErrorMessage } from '@/lib/toastErrorMessage';
+import { FiUser } from "react-icons/fi";
+import { authorizationURLGenerator } from '@/lib/authorizationURLGenerator';
+import { setAuthState } from '@/lib/authState';
 
 
 export default function Home() {
@@ -65,7 +68,7 @@ export default function Home() {
     setLoading(() => false);
   }
 
-  
+
 
   /**
    * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
@@ -96,6 +99,13 @@ export default function Home() {
   const searchSomething = async (subreddit) => {
     subredditRef.current.value = subreddit;
     handleClick();
+  }
+
+  const signInProcess = () => {
+    const {generatedURL, state} = authorizationURLGenerator()
+    setAuthState(state);
+
+    window.location = generatedURL;
   }
 
   return (
@@ -198,6 +208,12 @@ export default function Home() {
                 icon={
                   colorMode === 'dark' ? <SunIcon color={"orange.400"} /> : <MoonIcon color={"blue.200"} />
                 }
+              />
+
+              <IconButton
+                margin={2}
+                icon={<FiUser />}
+                onClick={signInProcess}
               />
 
             </Flex>

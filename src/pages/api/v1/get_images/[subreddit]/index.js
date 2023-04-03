@@ -10,16 +10,8 @@ import UrlGenerator from "@/lib/UrlGenerator";
 export default async function handler(req, res) {
 
   const subreddit = req.query.subreddit;
-  let sort = req.query.sort;
 
-  const topSort = ["hour", "day", "week", "month", "year", "all"]
-
-  let time = "all"
-  if (topSort.includes(sort)) {
-    time = sort;
-    sort = "top"
-  }
-  const url = UrlGenerator(subreddit, sort, time);
+  const url = UrlGenerator(subreddit, "hot", "all");
   const data = await handleAPIRequest(url);
 
   res.status(data.status).json(data);
