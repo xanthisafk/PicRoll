@@ -1,16 +1,14 @@
-import { defaultColorScheme } from '../data/meta.json'
-
 const getColorScheme = () => {
-    // if (typeof window !== 'undefined') {
-    //     return localStorage?.getItem("defaultColorScheme") ?? defaultColorScheme;
-    // }
-    return defaultColorScheme;
+    if (typeof window !== 'undefined') {
+        return localStorage?.getItem("defaultColorScheme") ?? "gray";
+    }
+    return "gray";
 }
 
 const setColorScheme = (color) => {
-    localStorage?.setItem("defaultColorScheme", color);
+    window !== undefined && localStorage.setItem("defaultColorScheme", color);
 }
 
-module.exports = {
+export {
     getColorScheme, setColorScheme
 }

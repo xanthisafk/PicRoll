@@ -20,6 +20,7 @@ import {
     Text,
     Button,
     HStack,
+    usePrefersReducedMotion,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
@@ -31,17 +32,19 @@ const ImageInfoModal = ({ isOpen, onClose, data, setter, toast, photo }) => {
 
     // create Date object from UTC date string
     const date = new Date(created * 1000);
-
     // formatting options
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-
      // convert to human-readable format
     const formattedDate = date.toLocaleDateString('en-US', options); 
+
 
     const colorScheme = getColorScheme();
 
     return (
-        <Modal isCentered isOpen={isOpen} onClose={onClose} size={"full"}>
+        <Modal
+            isCentered
+            isOpen={isOpen}
+            onClose={onClose}size={"full"}>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>

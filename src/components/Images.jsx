@@ -13,18 +13,21 @@ import Count from './Count';
 
 function Images({ item, photo, count }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     const spin = keyframes`
-        from { background-image: linear-gradient(0deg, #ff4e00 0%, #ec9f05 74%) }
-        to { background-image: linear-gradient(360deg, #ff4e00 0%, #ec9f05 74%) }
+    0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     `
 
 
-
-    const reduceAnimation = usePrefersReducedMotion();
-
-    const animation = reduceAnimation
-        ? undefined
-        : `${spin} infinite 5s alternate`
+    const animation = `${spin} infinite 5s alternate`
 
     return (
         <Box
@@ -43,7 +46,8 @@ function Images({ item, photo, count }) {
                 content: "''",
                 width: "100%",
                 backgroundColor: "orange.300",
-                backgroundImage: "linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)",
+                // backgroundImage: "linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)",
+                backgroundImage: "linear-gradient(to right, #FF4500, #FFA500)",
                 borderRadius: 20,
             }}
         >
@@ -60,6 +64,7 @@ function Images({ item, photo, count }) {
                 _active={{
                     transform: "scale(0.99)"
                 }}
+                onError={() => null}
             />
 
             <ImageInfoPanel

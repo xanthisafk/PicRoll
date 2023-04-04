@@ -10,7 +10,7 @@
         },
         "license": {
             "name": "MIT",
-            "url": "https://github.com/xanthisafk/PicRoll/blob/v2/LICENSE.md"
+            "url": "/LICENSE.txt"
         }
     },
     "docs": [
@@ -21,8 +21,21 @@
             "parameters": [],
             "errors": [],
             "example": {
-                "request": "https://picroll.vercel.app/api/",
+                "request": "/api/",
                 "response": "This response."
+            }
+        },
+        {
+            "route": "/api/v1/ping/",
+            "description": "Replies with pong.",
+            "method": "GET",
+            "parameters": [],
+            "errors": [],
+            "example": {
+                "request": "/api/v1/ping/",
+                "response": {
+                    "message": "Pong!"
+                }
             }
         },
         {
@@ -39,12 +52,12 @@
             ],
             "errors": [],
             "example": {
-                "request": "https://picroll.vercel.app/api/v1/download/https%3A%2F%2Fi.redd.it%2Fg2ddepwsckra1.png",
+                "request": "/api/v1/download/https%3A%2F%2Fi.redd.it%2Fg2ddepwsckra1.png",
                 "response": "Downloads the image."
             }
         },
         {
-            "route": "/api/v1/get_images/{subreddit}/{sort?}/{after?}",
+            "route": "/api/v1/get_images/{subreddit}/{sort}/{after}?nsfw=true",
             "description": "Retrieves the submissions from specified subreddit.",
             "method": "GET",
             "parameters": [
@@ -64,6 +77,12 @@
                     "name": "after",
                     "type": "string",
                     "description": "Retrieves data that comes after the given thing's full name. Read more about Reddit things: https://www.reddit.com/dev/api/oauth",
+                    "optional": true
+                },
+                {
+                    "name": "nsfw",
+                    "type": "string",
+                    "description": "Disables NSFW content. Must be either `true` or `false` (lowercase). It must be appended to string at the end as a query param. If param is empty or not `true`, it will be a false.",
                     "optional": true
                 }
             ],
@@ -90,7 +109,7 @@
                 }
             ],
             "example": {
-                "request": "https://picroll.vercel.app/api/v1/get_images/justicemusic/all/",
+                "request": "/api/v1/get_images/justicemusic/all/",
                 "response": {
                     "error": "false",
                     "data": {
@@ -150,7 +169,7 @@
                 }
             ],
             "example": {
-                "request": "https://picroll.vercel.app/api/v1/auth/retrieve_token/",
+                "request": "/api/v1/auth/retrieve_token/",
                 "response": {
                     "access_token": "Your access token",
                     "token_type": "bearer",
@@ -195,7 +214,7 @@
                 }
             ],
             "example": {
-                "request": "https://picroll.vercel.app/api/v1/auth/refresh_token/",
+                "request": "/api/v1/auth/refresh_token/",
                 "response": {
                     "access_token": "Your access token",
                     "token_type": "bearer",

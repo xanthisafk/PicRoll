@@ -7,12 +7,12 @@ const Logo = ({height, width}) => {
     <svg xmlns="http://www.w3.org/2000/svg" height={height} width={width}  viewBox="0 0 500 297">
   <defs>
     <linearGradient id="linear-gradient" x1="268.4" x2="162.9" y1="126.1" y2="231.5" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#f05123"/>
-      <stop offset=".1" stop-color="#ee6322"/>
-      <stop offset=".3" stop-color="#ed7d22"/>
-      <stop offset=".5" stop-color="#eb9022"/>
-      <stop offset=".8" stop-color="#eb9c22"/>
-      <stop offset="1" stop-color="#eba022"/>
+      <stop offset="0" stopColor="#f05123"/>
+      <stop offset=".1" stopColor="#ee6322"/>
+      <stop offset=".3" stopColor="#ed7d22"/>
+      <stop offset=".5" stopColor="#eb9022"/>
+      <stop offset=".8" stopColor="#eb9c22"/>
+      <stop offset="1" stopColor="#eba022"/>
     </linearGradient>
   </defs>
   <g id="Layer_1">

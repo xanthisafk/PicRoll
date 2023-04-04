@@ -1,6 +1,6 @@
 import { knuthShuffle } from './shuffle'
 
-const extractMediaPosts = (listing) => {
+const extractMediaPosts = (listing, nsfw) => {
     // to make it easy on myself
     const data = listing.data
 
@@ -24,6 +24,7 @@ const extractMediaPosts = (listing) => {
             // gallery submissions. we also check that the submission isn't self or video
             // we do not plan to implement video for now.
             (acceptableMedia.includes(child.data.post_hint) || child.data.hasOwnProperty("media_metadata"))
+            && child.data.over_18 === nsfw
             && !child.data.is_self
             && !child.data.is_video
     )

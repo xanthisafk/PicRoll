@@ -1,9 +1,14 @@
-import { Card, CardBody, CardHeader, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react'
-import Link from 'next/link'
-import React from 'react'
-import { getColorScheme } from '../lib/colorSchemeHandler'
+import { getColorScheme } from '@/lib/colorSchemeHandler';
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Divider,
+    Text,
+    VStack
+} from '@chakra-ui/react'
 
-function SubredditCard({ data, searchSomething }) {
+function SubredditCard({ data, exampleSearch }) {
     const { title, subs } = data;
     const colorScheme = getColorScheme();
   return (
@@ -14,6 +19,7 @@ function SubredditCard({ data, searchSomething }) {
                 fontWeight={"bold"}
                 color={`${colorScheme}.300`}
                 fontSize={"lg"}
+                className={"title-font"}
             >{title}</Text>
             <Divider />
         </CardHeader>
@@ -25,12 +31,12 @@ function SubredditCard({ data, searchSomething }) {
                             key={index}
                             href={""}
                             cursor={"pointer"}
-                            transition={".2s ease-in"}
                             _hover={{
-                                textDecoration: 'underline'
+                                textDecoration: 'underline',
+                                color: `${colorScheme}.500`
                             }}
                             aria-label={`load ${sub.text} example`}
-                            onClick={() => searchSomething(sub.value)}
+                            onClick={() => exampleSearch(sub.value)}
                         >{sub.text}</Text>
                     )
                 })}

@@ -1,10 +1,11 @@
-import Logo from '@/components/Logo';
-import { getAuthState } from '@/lib/authState';
-import { Flex, Heading, Image, Spinner, Text, useToast } from '@chakra-ui/react';
+import Logo from '../components/Logo';
+import { clearAuthState, getAuthState } from '@/lib/authState';
+import { Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import ERROR from '../data/error.json'
+import { resetToken, setToken } from '@/lib/accessTokenStore';
 
 const Authorize = () => {
 
@@ -16,7 +17,9 @@ const Authorize = () => {
 
     useEffect(() => {
 
+
         const isError = params.error;
+
         if (isError === "access_denied") {
             router.push("/")
         }
@@ -25,20 +28,43 @@ const Authorize = () => {
         const oldState = getAuthState();
 
 
-        console.log({ oldState, newState })
-        if (newState && newState !== oldState) {
+        if (newState !== oldState) {
             setError(() => ERROR["498"]);
             const fun = async () => {
                 await new Promise(r => setTimeout(r, 3000));
-                //router.push("/")
+                router.push("/")
             }
             fun();
         }
 
-        const code = params.code;
-        setWaitingForCode(() => true)
-        
-    }, [])
+        const func2 = async () => {
+            setWaitingForCode(() => true);
+            const code = params.code;
+            const data = await fetch("/api/v1/auth/retrieve_token",{
+                method: "post",
+                body: JSON.stringify({
+                    access_token: code
+                }),
+            })
+            .then(res => res.json())
+
+            if (!data.error) {
+                
+                let date = new Date();
+                date = date.setDate(date.getDate() + data.expires_in / 86400);
+
+                resetToken();
+                setToken("reddit_access_token", data.access_token);
+                setToken("reddit_token_expiry_date", date);
+                setToken("reddit_refresh_token", data.refresh_token);
+                clearAuthState();
+                router.push("/")
+            }
+
+        }
+
+        func2();
+    }, [params, router])
 
 
     return (

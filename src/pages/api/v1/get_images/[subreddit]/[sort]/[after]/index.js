@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   const subreddit = req.query.subreddit;
   const after = req.query.after;
   let sort = req.query.sort;
+  const nsfw = req.query.nsfw && req.query.nsfw === "true";
 
   const acceptableSort = [
     "new", "hot", "hour", "day", "week", "month", "year", "all"
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
       sort = "top"
     }
     const url = UrlGenerator(subreddit, sort, time, undefined, after);
-    data = await handleAPIRequest(url);
+    data = await handleAPIRequest(url, nsfw);
   } else {
     if (!acceptableSort.includes(sort)) {
       data = {

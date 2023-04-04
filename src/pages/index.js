@@ -1,227 +1,163 @@
-/* eslint-disable react/no-children-prop */
-import Head from 'next/head'
-import Image from 'next/image'
-import meta from '../data/meta.json'
-
-import sort from '../data/sort.json'
+import meta from '../data/meta.json';
+import sort from '../data/sort.json';
 import {
   Box,
   Button,
-  Flex,
+  HStack,
   IconButton,
   Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
   Select,
-  Text,
-  useColorMode,
+  useDisclosure,
   useToast
 } from '@chakra-ui/react';
-import logo from '../../public/logo.jpg'
-import "@fontsource/fasthand"
-import { CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { useRef, useState } from 'react';
-import LoadingBox from '../components/LoadingBox';
+import { useEffect, useRef, useState } from 'react';
 import extractSubredditName from '../lib/extractSubredditName';
-import { getColorScheme } from '../lib/colorSchemeHandler'
+
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
 
 import { handleClientRequest } from '@/lib/handleClientRequest';
 import { toastErrorMessage } from '@/lib/toastErrorMessage';
-import { FiUser } from "react-icons/fi";
-import { authorizationURLGenerator } from '@/lib/authorizationURLGenerator';
-import { setAuthState } from '@/lib/authState';
+import Logo from '@/components/Logo';
+import PicRollHead from '@/components/Head';
+import { IoPersonSharp } from 'react-icons/io5';
+import { BiSliderAlt } from 'react-icons/bi';
+import SettingsModal from '@/components/SettingsModal';
+import { getColorScheme, setColorScheme } from '@/lib/colorSchemeHandler';
+import { useRouter } from 'next/router';
+import LoadingBox from '@/components/LoadingBox';
+import { getNsfw, setNsfw } from '@/lib/nsfwHandler';
+import { getDefaultSort, setDefaultSort } from '@/lib/deafultSortHandler';
 
 
 export default function Home() {
 
-  const { colorMode, toggleColorMode } = useColorMode();
-
-  const subredditRef = useRef("");
-  const sortRef = useRef("");
-  const [isLoading, setLoading] = useState(false);
+  // Head
   const [siteTitle, setSiteTitle] = useState(meta.title)
-  const [data, setData] = useState([]);
-  const [after, setAfter] = useState("");
 
+  // Search
+  const router = useRouter();
+  const searchRef = useRef();
+  const sortRef = useRef();
   const toast = useToast();
 
-  const colorScheme = getColorScheme();
+  const [isLoading, setLoading] = useState(false);
+  const [data, dataSetter] = useState([]);
 
-  /**
- * Handles the form submission event by preventing the default behavior and calling the handleClick function.
- * @param {Object} event - The form submission event object.
- */
-  const handleSubmit = (event) => {
+  const handleSubmitOrClick = async (event) => {
     event.preventDefault();
-    handleClick();
-  }
-
-  /**
-  * Sets the loading state to true, calls fetchHandler, and then sets the loading state to false
-  */
-  const handleClick = async () => {
     setLoading(() => true);
-    await fetchHandler();
-    setLoading(() => false);
+    await handleRequest();
+    setLoading(() => false)
   }
 
+  const handleRequest = async () => {
+    const subreddit = extractSubredditName(searchRef.current.value);
+    if (!subreddit) { return toastErrorMessage({ message: "You did not enter any subreddit" }, toast) }
+    const sort = sortRef.current.value ?? "hot";
 
+    const response = await handleClientRequest(subreddit, sort);
 
-  /**
-   * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
-   * @returns {Promise<void>}
-   */
-  const fetchHandler = async () => {
-    const subreddit = extractSubredditName(subredditRef.current.value);
-    if (!subreddit) { return alert("You did not enter a subreddit.") }
-    let sort = sortRef.current.value;
-
-    const data = await handleClientRequest(subreddit, sort)
-
-    if (data.error) {
+    if (response.error) {
       toastErrorMessage(data.data, toast);
-      setSiteTitle(() => `${meta.title}`)
     } else {
-      setAfter(() => data.after);
-      setData(() => data.data.posts);
-      setSiteTitle(() => `${subreddit} - ${meta.title}`)
+      dataSetter(() => response.data.posts);
+      setSiteTitle(() => `${subreddit} - ${meta.title}`);
     }
   }
 
-  /**
-  * Searches for a subreddit and triggers the handle click event with the subreddit value
-  * @param {string} subreddit - The subreddit to search for
-  * @returns {Promise<void>}
-  */
-  const searchSomething = async (subreddit) => {
-    subredditRef.current.value = subreddit;
-    handleClick();
+  // Settings modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [colorScheme, colorSchemeSetter] = useState("gray");
+  const [isNsfwEnabled, setNsfwEnable] = useState(true);
+  const [defaultSort, setDefSort] = useState("hot")
+
+  const colorSchemeChange = (event) => {
+    const color = event.target.value;
+    setColorScheme(color);
+    colorSchemeSetter(() => color)
   }
 
-  const signInProcess = () => {
-    const {generatedURL, state} = authorizationURLGenerator()
-    setAuthState(state);
-
-    window.location = generatedURL;
+  const toggleNsfw = () => {
+    const newState = !isNsfwEnabled;
+    setNsfwEnable(() => newState);
+    setNsfw(newState);
   }
+
+  const changeSort = (event) => {
+    const sort = event.target.value;
+    setDefaultSort(sort);
+    setDefSort(() => sort)
+  }
+
+  useEffect(() => {
+    const color = getColorScheme();
+    const nsfw = getNsfw();
+    const def = getDefaultSort();
+    colorSchemeSetter(() => color)
+    setNsfwEnable(() => nsfw);
+    setDefSort(() => def);
+  }, [])
 
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-        <meta name="description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta name="keywords" content={meta.keywords.replace("%%APPNAME%%", meta.title)} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="icons/icon-512x512.png"></link>
-
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta property="og:image" content="/logo_hq.png" />
-        <meta property="og:url" content="https://picroll.vercel.app" />
-
-        <meta name="twitter:title" content={meta.title} />
-        <meta name="twitter:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta name="twitter:image" content="/logo_hq.png" />
-        <meta name="twitter:card" content="/logo_hq.png" />
-
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <PicRollHead title={siteTitle} />
       <main style={{ minHeight: "100vh" }}>
         <ScrollToTop />
-        <Flex
-          height={"15vh"}
-          width={"100%"}
-          align={"center"}
-          justify={"space-evenly"}
+        <Box
+          display={"block"}
+          borderRadius={"2xl"}
+          backdropFilter={{ blur: '10px' }}
+          p={5}
         >
-          {/* Logo */}
-          <Box
-            padding={3}
-            width={100}
-            borderRadius={"lg"}
-            onClick={() => window.location = "/"}
-            cursor={"pointer"}
+          <HStack
+            my={1}
+            justify={'space-between'}
           >
-            <Image priority src={logo} alt="logo of website" />
-            <Text
-              textAlign={"center"}
-              fontFamily={`"Fasthand", cursive`}
-              fontSize={"2xl"}
-              paddingY={1}
-              color={`${colorScheme}.300`}
-            >{meta.title}</Text>
-          </Box>
+            <Logo
+              width={100}
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/")}
+            />
+            <IconButton onClick={() => null} color={`${colorScheme}.300`} icon={<IoPersonSharp />} />
 
-          <Box
-            flexGrow={1}
-            height={"100%"}
-            paddingY={3}
-            paddingRight={3}
-          >
-            {/* Search box */}
-            <form onSubmit={handleSubmit}>
-              <InputGroup padding={2}>
-                <InputLeftAddon children={meta.searchLeadingText} />
-                <Input
-                  ref={subredditRef}
-                  variant={'outline'}
-                  placeholder={meta.searchPlaceholder}
-                />
-                <InputRightAddon
-                  cursor={"pointer"}
-                  title={"Clear input"}
-                  onClick={() => { subredditRef.current.value = "" }}
-                >
-                  <CloseIcon color={"red.400"} />
-                </InputRightAddon>
-              </InputGroup>
-            </form>
+          </HStack>
+          <form onSubmit={handleSubmitOrClick}>
+            <Input my={1} type={"text"} placeholder={"subreddit name"} ref={() => null} />
+          </form>
+          <Select my={1} ref={sortRef} defaultValue={defaultSort}>
+            {sort.map((item, index) => (
+              <option key={index} value={item.value}>{item.text}</option>
+            ))}
+          </Select>
+          <HStack my={1}>
+            <Button
+              width="80%"
+              onClick={handleSubmitOrClick}
+              colorScheme={colorScheme}
+            >{`Let's Roll`}</Button>
 
-            <Flex direction={"row-reverse"}>
-              {/* Search button */}
-              <Button
-                margin={2}
-                colorScheme={colorScheme}
-                onClick={handleClick}
-                aria-label='search'
-              >{meta.searchButtonText}</Button>
+            <IconButton
+              width={"20%"}
+              icon={<BiSliderAlt />}
+              onClick={onOpen}
+            />
+          </HStack>
+          <SettingsModal
+            colorScheme={colorScheme}
+            colorSchemeChange={colorSchemeChange}
+            isOpen={isOpen}
+            onClose={onClose}
+            nsfw={isNsfwEnabled}
+            toggleNsfw={toggleNsfw}
+            defaultSort={defaultSort}
+            changeSort={changeSort}
+          />
+        </Box>
 
-              {/* Sort Select */}
-              <Select
-                width={{ base: "100%", lg: "20%", md: "40%" }}
-                margin={2}
-                ref={sortRef}
-              >
-                {sort.map((item, index) => (
-                  <option key={index} value={item.value}>{item.text}</option>
-                ))}
-              </Select>
+          <LoadingBox data={data} isLoading={isLoading} />
 
-              <IconButton
-                margin={2}
-                onClick={toggleColorMode}
-                aria-label='toggle theme'
-                icon={
-                  colorMode === 'dark' ? <SunIcon color={"orange.400"} /> : <MoonIcon color={"blue.200"} />
-                }
-              />
-
-              <IconButton
-                margin={2}
-                icon={<FiUser />}
-                onClick={signInProcess}
-              />
-
-            </Flex>
-
-          </Box>
-        </Flex>
-
-        <LoadingBox isLoading={isLoading} data={data} searchSomething={searchSomething} />
       </main>
       <Footer />
     </>

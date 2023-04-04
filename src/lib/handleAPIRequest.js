@@ -3,7 +3,7 @@ import ERROR from '../data/error.json';
 import extractMediaPosts from './extractMediaPosts';
 
 
-const handleAPIRequest = async (url) => {
+const handleAPIRequest = async (url, nsfw = true) => {
 
     // Initialize the error flag
     let error = false;
@@ -47,7 +47,7 @@ const handleAPIRequest = async (url) => {
                 message: ERROR[statusCode],
             }
         } else {
-            reply = !error && extractMediaPosts(response)
+            reply = !error && extractMediaPosts(response, nsfw)
         }
 
     // Create the data object with error flag and data

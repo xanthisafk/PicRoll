@@ -5,6 +5,7 @@ import {
     Text,
     Link as ChakraLink,
     useColorModeValue,
+    usePrefersReducedMotion,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
@@ -23,6 +24,8 @@ function Footer() {
     const colorScheme = getColorScheme();
 
     const openUrl = (url) => window.open(url);
+
+    const shouldAnimate = usePrefersReducedMotion();
 
     return (
         <Flex
@@ -70,7 +73,7 @@ function Footer() {
                         onClick={() => openUrl(footer.github)}
                         aria-label="open author's GitHub"
                         fontSize="2xl"
-                        transition=".1s ease-in-out"
+                        transition={shouldAnimate && ".1s ease-in-out"}
                         cursor="pointer"
                         title="Open author's GitHub"
                         _hover={{ color: hoverColor }}

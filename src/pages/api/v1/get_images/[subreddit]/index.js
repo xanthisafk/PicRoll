@@ -10,9 +10,10 @@ import UrlGenerator from "@/lib/UrlGenerator";
 export default async function handler(req, res) {
 
   const subreddit = req.query.subreddit;
+  const nsfw = req.query.nsfw && req.query.nsfw === "true";
 
   const url = UrlGenerator(subreddit, "hot", "all");
-  const data = await handleAPIRequest(url);
+  const data = await handleAPIRequest(url, nsfw);
 
   res.status(data.status).json(data);
 }

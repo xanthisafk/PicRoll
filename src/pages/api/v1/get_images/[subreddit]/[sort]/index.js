@@ -12,6 +12,7 @@ export default async function handler(req, res) {
 
   const subreddit = req.query.subreddit;
   let sort = req.query.sort;
+  const nsfw = req.query.nsfw && req.query.nsfw === "true";
 
   let data;
 
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
       sort = "top"
     }
     const url = UrlGenerator(subreddit, sort, time);
-    data = await handleAPIRequest(url);
+    data = await handleAPIRequest(url, nsfw);
   } else {
     data = {
       error: true,

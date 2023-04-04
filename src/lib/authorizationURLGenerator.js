@@ -7,7 +7,7 @@ const authorizationURLGenerator = () => {
     const redirect_uri = encodeURI(process.env.NEXT_PUBLIC_REDDIT_REDIRECT_URI);
     const scope = encodeURI(process.env.NEXT_PUBLIC_REDDIT_SCOPE);
 
-    const generatedURL = `https://www.reddit.com/api/v1/authorize?client_id=${client_id}&response_type=code&state=${state}&duration=${duration}&redirect_uri=${redirect_uri}&scope=${scope}`
+    const generatedURL = `https://www.reddit.com/api/v1/authorize.compact?client_id=${client_id}&response_type=code&state=${state}&duration=${duration}&redirect_uri=${redirect_uri}&scope=${scope}`
 
     return {
         generatedURL,

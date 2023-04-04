@@ -9,7 +9,8 @@
 const toastErrorMessage = ({ message, duration = 9000, isClosable = true }, toast) => {
     toast({
       status: "error",
-      title: message,
+      title: "Error",
+      description: message,
       duration,
       isClosable
     })
