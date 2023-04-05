@@ -1,4 +1,4 @@
-import { uuidGenerator } from "./uuidGenerator";
+import { uuidGenerator } from "../uuidGenerator";
 
 const authorizationURLGenerator = () => {
     const client_id = process.env.NEXT_PUBLIC_REDDIT_CLIENT_ID;

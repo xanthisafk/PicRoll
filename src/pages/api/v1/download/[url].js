@@ -1,3 +1,5 @@
+import { checkFileSize } from '@/lib/backend/checkFileSize';
+import ERROR from '../../../../data/error.json'
 import fetch from 'node-fetch';
 
 /**
@@ -9,6 +11,16 @@ import fetch from 'node-fetch';
 export default async function handler(req, res) {
   const imageUrl = req.query.url;
 
+  // Get file size
+ const isBiggerThan4 = await checkFileSize(imageUrl);
+
+ if (isBiggerThan4) {
+  return res.status(413).json({
+    error: true,
+    message: ERROR[413],
+    statusCode: 413
+  });
+ }
   // Fetch the image data from the URL
   const imageResponse = await fetch(imageUrl);
 

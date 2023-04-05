@@ -1,8 +1,8 @@
 const getColorScheme = () => {
     if (typeof window !== 'undefined') {
-        return localStorage?.getItem("defaultColorScheme") ?? "gray";
+        return localStorage?.getItem("defaultColorScheme") ?? "orange";
     }
-    return "gray";
+    return "orange";
 }
 
 const setColorScheme = (color) => {

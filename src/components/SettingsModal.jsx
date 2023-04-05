@@ -4,6 +4,7 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalOverlay,
     Select,
@@ -66,7 +67,7 @@ const SettingsModal = ({ isOpen, onClose, colorScheme, colorSchemeChange, nsfw, 
                             })}
                             </Select>
                         </HStack>
-                        <HStack justify={"space-between"}>
+                        {/* <HStack justify={"space-between"}>
                             <Text>Default sort</Text>
                             <Select
                                 defaultValue={defaultSort}
@@ -77,9 +78,16 @@ const SettingsModal = ({ isOpen, onClose, colorScheme, colorSchemeChange, nsfw, 
                                     <option key={index} value={item.value}>{item.text}</option>
                                 ))}
                             </Select>
-                        </HStack>
+                        </HStack> */}
                     </VStack>
                 </ModalBody>
+                <ModalFooter>
+                    <Text
+                        fontSize={"2xs"}
+                        textAlign={"center"}
+                        width={"100%"}
+                    >This website stores settings and authentication information on your computer.</Text>
+                </ModalFooter>
             </ModalContent>
         </Modal>
     )

@@ -1,8 +1,8 @@
-import { knuthShuffle } from './shuffle'
+import { knuthShuffle } from "./shuffle";
 
 const extractMediaPosts = (listing, nsfw) => {
     // to make it easy on myself
-    const data = listing.data
+    const data = listing.data;
 
     // this will be the array that will return
     const posts = new Array();
@@ -12,6 +12,7 @@ const extractMediaPosts = (listing, nsfw) => {
 
     const acceptableMedia = [
         "image",
+        "gif"
         // "rich:video",
         // "hosted:video",
     ]
@@ -19,14 +20,19 @@ const extractMediaPosts = (listing, nsfw) => {
     // filter data to only contain posts that have images.
     const filteredData = data.children.filter(
         child =>
-            // if submission is part of acceptableMedia or has the property of `media_metadata`
-            // we must check this because reddit does not give a post hint for
-            // gallery submissions. we also check that the submission isn't self or video
-            // we do not plan to implement video for now.
+            /* 
+                This code checks if a given Reddit post meets certain criteria to be considered acceptable for display.
+                It checks if the post hint is an acceptable media type (as defined by the acceptableMedia array)
+                or if the post has media metadata. It also checks if the post is not a self-post (i.e., a text-only post)
+                and not a video. Additionally, if the nsfw variable is set to true (i.e., the user has enabled NSFW content),
+                then the post is allowed even if it is marked as NSFW.
+                If nsfw is false, the post is only allowed if it is not marked as NSFW (i.e., the over_18 property is false).
+             */
             (acceptableMedia.includes(child.data.post_hint) || child.data.hasOwnProperty("media_metadata"))
-            && child.data.over_18 === nsfw
             && !child.data.is_self
             && !child.data.is_video
+            && nsfw ? true : !child.data.over_18
+        
     )
 
     filteredData.forEach(element => {
@@ -41,12 +47,10 @@ const extractMediaPosts = (listing, nsfw) => {
         } = element.data;
 
         const permalink = `https://www.reddit.com${element.data.permalink}`;
-        const images = new Array();
 
         const isGallery = element.data.hasOwnProperty("media_metadata");
         const post_hint = isGallery ? "gallery" : element.data.post_hint
 
-        // const posts = new Array()
 
         if (isGallery) {
             const media = element.data.media_metadata;
@@ -108,7 +112,7 @@ const extractMediaPosts = (listing, nsfw) => {
 
     const submissions = {
         after,
-        posts: knuthShuffle(posts)
+        posts: posts
     }
 
     return submissions;

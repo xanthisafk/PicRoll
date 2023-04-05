@@ -2,16 +2,14 @@ import {
     Box,
     Img as ChakraImage,
     Skeleton,
-    SkeletonText,
-    Spinner,
     keyframes,
-    useDisclosure,
-    usePrefersReducedMotion
-} from '@chakra-ui/react'
-import ImageInfoPanel from './ImageInfoPanel'
-import Count from './Count';
+    useDisclosure
+} from '@chakra-ui/react';
+import NextImage from 'next/image'
+import ImageInfoPanel from './ImageInfoPanel';
+import { gradientHelper } from '@/lib/gradientHelper';
 
-function Images({ item, photo, count }) {
+function Images({ item, photo, colorScheme }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const spin = keyframes`
@@ -27,7 +25,7 @@ function Images({ item, photo, count }) {
     `
 
 
-    const animation = `${spin} infinite 5s alternate`
+    const animation = `${spin} infinite 10s ease`
 
     return (
         <Box
@@ -38,6 +36,7 @@ function Images({ item, photo, count }) {
             display={"inline-block"}
             transition={".2s"}
             backgroundClip={"padding-box"}
+            backgroundSize={"400% 400%"}
             border={"8px solid transparent"}
             borderRadius={2}
             
@@ -45,9 +44,9 @@ function Images({ item, photo, count }) {
                 animation: animation,
                 content: "''",
                 width: "100%",
-                backgroundColor: "orange.300",
+                backgroundColor: `${colorScheme}.300`,
                 // backgroundImage: "linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)",
-                backgroundImage: "linear-gradient(to right, #FF4500, #FFA500)",
+                backgroundImage: gradientHelper(colorScheme),
                 borderRadius: 20,
             }}
         >
@@ -67,6 +66,8 @@ function Images({ item, photo, count }) {
                 onError={() => null}
             />
 
+            
+
             <ImageInfoPanel
                 submission={item}
                 photo={photo}
@@ -74,7 +75,6 @@ function Images({ item, photo, count }) {
                 isOpen={isOpen}
                 onClose={onClose}
             />
-            {/* <Count num={count} /> */}
         </Box>
     )
 }

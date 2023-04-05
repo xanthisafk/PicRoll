@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import ERROR from '../data/error.json'
-import { resetToken, setToken } from '@/lib/accessTokenStore';
+import { resetToken, setToken } from '@/lib/localStorageHelper';
 
 const Authorize = () => {
 

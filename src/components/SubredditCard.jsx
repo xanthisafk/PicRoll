@@ -1,4 +1,5 @@
 import { getColorScheme } from '@/lib/colorSchemeHandler';
+import { gradientHelper } from '@/lib/gradientHelper';
 import {
     Card,
     CardBody,
@@ -8,17 +9,21 @@ import {
     VStack
 } from '@chakra-ui/react'
 
-function SubredditCard({ data, exampleSearch }) {
+function SubredditCard({ data, exampleSearch, colorScheme }) {
     const { title, subs } = data;
-    const colorScheme = getColorScheme();
   return (
-    <Card>
+    <Card m={3}>
         <CardHeader>
             <Text
                 textAlign={"center"}
                 fontWeight={"bold"}
                 color={`${colorScheme}.300`}
-                fontSize={"lg"}
+                bg={gradientHelper(colorScheme)}
+                backgroundClip={"text"}
+                sx={{
+                    WebkitTextFillColor: "transparent"
+                }}
+                fontSize={"2xl"}
                 className={"title-font"}
             >{title}</Text>
             <Divider />

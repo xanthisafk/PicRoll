@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import ERROR from '../data/error.json';
+import ERROR from '../../data/error.json';
 import extractMediaPosts from './extractMediaPosts';
 
 

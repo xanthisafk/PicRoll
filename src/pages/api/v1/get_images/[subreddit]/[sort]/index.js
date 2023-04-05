@@ -1,5 +1,5 @@
-import { handleAPIRequest } from "@/lib/handleAPIRequest";
-import UrlGenerator from "@/lib/UrlGenerator";
+import { handleAPIRequest } from "@/lib/backend/handleAPIRequest";
+import UrlGenerator from "@/lib/backend/UrlGenerator";
 import ERROR from "../../../../../../data/error.json";
 
 /**

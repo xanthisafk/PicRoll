@@ -34,7 +34,7 @@ import extractSubredditName from '@/lib/extractSubredditName';
 import { toastErrorMessage } from '@/lib/toastErrorMessage';
 import { handleClientRequest } from '@/lib/handleClientRequest';
 import { setAuthState } from '@/lib/authState';
-import { authorizationURLGenerator } from '@/lib/authorizationURLGenerator';
+import { authorizationURLGenerator } from '@/lib/backend/authorizationURLGenerator';
 import { useEffect } from 'react';
 import { getColorScheme, setColorScheme } from '@/lib/colorSchemeHandler';
 
