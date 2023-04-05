@@ -112,7 +112,7 @@ const extractMediaPosts = (listing, nsfw) => {
 
     const submissions = {
         after,
-        posts: posts
+        posts: knuthShuffle(posts)
     }
 
     return submissions;

@@ -50,12 +50,13 @@ export default function Home() {
 
 
   const {
-    start, next, hasMore, data, loading
+    next, reset, hasMore, data, loading
   } = useRedditData(subreddit, sorting, isNsfwEnabled)
 
 
   const handleSubmitOrClick = event => {
     event.preventDefault();
+    reset();
     next();
   }
 
@@ -77,14 +78,12 @@ export default function Home() {
     setNsfw(newState);
   }
 
-  const changeSort = (event) => {
-    return null
-  }
 
 
   // Loading Box
   const searchExample = (subreddit) => {
-    null
+    setSubreddit(() => subreddit);
+    next();
   }
 
   return (

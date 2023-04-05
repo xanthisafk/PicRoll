@@ -6,10 +6,8 @@ import { getColorScheme } from '../lib/colorSchemeHandler';
 
 import meta from '../data/meta.json'
 
-const ScrollToTop = () => {
+const ScrollToTop = ({colorScheme}) => {
   const [isVisible, setIsVisible] = useState(false);
-
-  const colorScheme = getColorScheme();
 
   const scrollToTop = () => {
     window.scrollTo({
