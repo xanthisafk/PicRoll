@@ -19,13 +19,10 @@ import downloadImage from '@/lib/downloadImage';
 
 import meta from '../data/meta.json'
 
-import { getColorScheme } from '../lib/colorSchemeHandler'
-
-function ImageInfoPanel({ submission, onOpen, isOpen, onClose, photo }) {
+function ImageInfoPanel({ submission, colorScheme, onOpen, isOpen, onClose, photo }) {
     const [copied, setCopied] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
     const toast = useToast();
-    const colorScheme = getColorScheme();
     return (
         <Box
             className={"image-info-panel"}
@@ -36,6 +33,7 @@ function ImageInfoPanel({ submission, onOpen, isOpen, onClose, photo }) {
             transition={".2s ease-in-out"}
         >
             <ImageInfoModal
+                colorScheme={colorScheme}
                 data={submission}
                 photo={photo}
                 isOpen={isOpen}

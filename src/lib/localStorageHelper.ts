@@ -7,20 +7,20 @@ type Token =
     | "picroll_is_nsfw_enabled"
     
 
-const getLocalStorageItem = (type: Token) => {
+const getItem = (type: Token) => {
     return window !== undefined && localStorage.getItem(type);
 }
 
-const setLocalStorageItem = (type: Token, token: string) => {
+const setToken = (type: Token, token: string) => {
     window !== undefined && localStorage.setItem(type, token);
 }
 
-const resetLocalStorageItem = (type: Token) => {
+const resetToken = (type: Token) => {
     window !== undefined && localStorage.removeItem(type);
 }
 
 export {
-    getLocalStorageItem,
-    setLocalStorageItem,
-    resetLocalStorageItem
+    getItem,
+    setToken,
+    resetToken
 }

@@ -11,27 +11,27 @@ const extractMediaPosts = (listing, nsfw) => {
     const after = data.after
 
     const acceptableMedia = [
-        "image",
-        "gif"
-        // "rich:video",
-        // "hosted:video",
+        "image"
     ]
 
     // filter data to only contain posts that have images.
     const filteredData = data.children.filter(
         child =>
-            /* 
-                This code checks if a given Reddit post meets certain criteria to be considered acceptable for display.
-                It checks if the post hint is an acceptable media type (as defined by the acceptableMedia array)
-                or if the post has media metadata. It also checks if the post is not a self-post (i.e., a text-only post)
-                and not a video. Additionally, if the nsfw variable is set to true (i.e., the user has enabled NSFW content),
-                then the post is allowed even if it is marked as NSFW.
-                If nsfw is false, the post is only allowed if it is not marked as NSFW (i.e., the over_18 property is false).
-             */
-            (acceptableMedia.includes(child.data.post_hint) || child.data.hasOwnProperty("media_metadata"))
-            && !child.data.is_self
-            && !child.data.is_video
-            && nsfw ? true : !child.data.over_18
+            {
+                let evaluate
+                //((child.data.post_hint && acceptableMedia.includes(child.data.post_hint)) || child.data.hasOwnProperty("media_metadata")) && (nsfw ? 1 === 1 : child.data.over_18 === false)
+                if ((child.data.post_hint && acceptableMedia.includes(child.data.post_hint)) || child.data.hasOwnProperty("media_metadata")) {
+                    if (nsfw) {
+                      evaluate = true;
+                    } else {
+                      evaluate = !child.data.over_18;
+                    }
+                  } else {
+                    evaluate = false;
+                  }
+                  
+                return evaluate
+            }
         
     )
 

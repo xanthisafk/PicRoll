@@ -7,28 +7,22 @@ const useRedditData = (subreddit, sort, nsfw) => {
     const [data, setData] = useState([]);
     const [after, setAfter] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [trigger, setTrigger] = useState(false)
     const toast = useToast();
 
     useEffect(() => {
-        setData(() => []);
-        setAfter(() => null)
-        setLoading(() => false);
-    }, [subreddit, sort, nsfw, trigger])
-
+        if (!subreddit || !sort || !nsfw) return;
+        resetData();
+        fetchData();
+    }, [subreddit, sort, nsfw]);
 
     const hasMore = after !== null;
-
-    const reset = () => {
-        setTrigger(old => !old)
-    }
 
     const fetchData = async () => {
         setLoading(true);
         try {
             const response = await handleClientRequest(subreddit, sort, after, nsfw);
             if (response.error) {
-                throw new Error(response.message);
+                throw new Error(response.data.message);
             }
             setData(prevData => [...prevData, ...response.data.posts]);
             setAfter(response.data.after);
@@ -38,16 +32,22 @@ const useRedditData = (subreddit, sort, nsfw) => {
         setLoading(false);
     };
 
-    const next = () => {
+    const fetchMore = () => {
         fetchData();
     };
+
+    const resetData = () => {
+        setData(() => []);
+        setAfter(() => null);
+        setLoading(() => false);
+    }
 
     return {
         data,
         loading,
         hasMore,
-        next,
-        reset,
+        fetchMore,
+        resetData,
     };
 };
 

@@ -9,7 +9,7 @@ import NextImage from 'next/image'
 import ImageInfoPanel from './ImageInfoPanel';
 import { gradientHelper } from '@/lib/gradientHelper';
 
-function Images({ item, photo, colorScheme }) {
+function Images({ item, photo, colorScheme, firstRef }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const spin = keyframes`
@@ -29,6 +29,7 @@ function Images({ item, photo, colorScheme }) {
 
     return (
         <Box
+            ref={firstRef ?? null}
             className={"image-box"}
             width={"100%"}
             padding={1.5}
@@ -38,20 +39,21 @@ function Images({ item, photo, colorScheme }) {
             backgroundClip={"padding-box"}
             backgroundSize={"400% 400%"}
             border={"8px solid transparent"}
-            borderRadius={2}
-            
+            borderRadius={20}
             _hover={{
                 animation: animation,
                 content: "''",
                 width: "100%",
-                backgroundColor: `${colorScheme}.300`,
+                //backgroundColor: `${colorScheme}.300`,
                 // backgroundImage: "linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)",
-                backgroundImage: gradientHelper(colorScheme),
+                //backgroundImage: gradientHelper(colorScheme),
                 borderRadius: 20,
+                boxShadow:"dark-lg"
             }}
         >
 
             <ChakraImage
+                className={"image"}
                 width={"100%"}
                 onClick={onOpen}
                 fallback={<Skeleton width={"100%"} height={"30vh"} />}
@@ -60,15 +62,13 @@ function Images({ item, photo, colorScheme }) {
                 borderRadius={"md"}
                 outline={"0px solid transparent"}
                 transition={".2s ease-in-out"}
-                _active={{
-                    transform: "scale(0.99)"
-                }}
                 onError={() => null}
             />
 
             
 
             <ImageInfoPanel
+                colorScheme={colorScheme}
                 submission={item}
                 photo={photo}
                 onOpen={onOpen}

@@ -12,26 +12,37 @@ import {
     Text,
     VStack,
     useColorMode,
-    usePrefersReducedMotion
 } from '@chakra-ui/react';
 
-import colorSchemes from '../data/colorScheme.json';
-import sort from '../data/sort.json';
+import COLORS from '../data/colorScheme.json';
 
-const SettingsModal = ({ isOpen, onClose, colorScheme, colorSchemeChange, nsfw, toggleNsfw, defaultSort, changeSort }) => {
+const SettingsModal = ({
+    isOpen,
+    onClose,
+    colorScheme,
+    colorSchemeChange,
+    nsfw,
+    toggleNsfw,
+    KEYS
+ }) => {
     const { colorMode, toggleColorMode } = useColorMode();
-    const shouldntAnimate = usePrefersReducedMotion();
+    const toggleNsfwInLocalStorage = (event) => {
+
+        toggleNsfw(KEYS.nsfw, event.target.checked ? "0" : "1")
+    }
+    const changeColorSchemeInLocalStorage = (event) => {
+        colorSchemeChange(event.target.value);
+    }
     return (
         <Modal
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            motionPreset={shouldntAnimate ? "none" : "scale"}
         >
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Text className="title-font">Preferences</Text>
+                    <Text fontSize={"xl"} className="title-font">Preferences</Text>
                     <ModalCloseButton />
                 </ModalHeader>
                 <ModalBody>
@@ -41,8 +52,8 @@ const SettingsModal = ({ isOpen, onClose, colorScheme, colorSchemeChange, nsfw, 
                             <Text>Disable NSFW</Text>
                             <Switch
                                 colorScheme={colorScheme}
-                                defaultChecked={!nsfw}
-                                onChange={toggleNsfw}
+                                defaultChecked={nsfw === "1" ? false : true}
+                                onChange={toggleNsfwInLocalStorage}
                             />
                         </HStack>
                         <HStack justify={"space-between"}>
@@ -59,35 +70,16 @@ const SettingsModal = ({ isOpen, onClose, colorScheme, colorSchemeChange, nsfw, 
                                 defaultValue={colorScheme}
                                 colorScheme={colorScheme}
                                 maxWidth={"40%"}
-                                onChange={colorSchemeChange}
-                            >{colorSchemes.map((obj, index) => {
+                                onChange={changeColorSchemeInLocalStorage}
+                            >{COLORS.map((obj, index) => {
                                 return (
                                     <option key={index} value={obj.value}>{obj.text}</option>
                                 )
                             })}
                             </Select>
                         </HStack>
-                        {/* <HStack justify={"space-between"}>
-                            <Text>Default sort</Text>
-                            <Select
-                                defaultValue={defaultSort}
-                                onChange={changeSort}
-                                maxW={"40%"}
-                            >
-                                {sort.map((item, index) => (
-                                    <option key={index} value={item.value}>{item.text}</option>
-                                ))}
-                            </Select>
-                        </HStack> */}
                     </VStack>
                 </ModalBody>
-                <ModalFooter>
-                    <Text
-                        fontSize={"2xs"}
-                        textAlign={"center"}
-                        width={"100%"}
-                    >This website stores settings and authentication information on your computer.</Text>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     )

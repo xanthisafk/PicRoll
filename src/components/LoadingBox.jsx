@@ -3,6 +3,7 @@ import {
   Flex,
   HStack,
   Skeleton,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
@@ -47,14 +48,7 @@ const LoadingBox = ({ isLoading, data, exampleSearch, colorScheme, moreSubmissio
           >{meta.nothingLoadedText}</Text>
           <Box width={"100%"}>
             <Flex width={"100%"} justify={"center"} wrap={"wrap"}>
-              {examples.length && examples.map((cat, i) =>
-                <SubredditCard
-                  key={i}
-                  data={cat}
-                  exampleSearch={exampleSearch}
-                  colorScheme={colorScheme}
-                />
-              )}
+              {isLoading && <Spinner />}
             </Flex>
           </Box>
         </Flex>
@@ -76,9 +70,10 @@ const LoadingBox = ({ isLoading, data, exampleSearch, colorScheme, moreSubmissio
         <MasonryLayout>
           {data.map((item, key1) => {
             return item.images.map((image, key2) => {
-              if (key2 + 1 === item.images.length) {
+              if ((data.length > 5) && (key1 === data.length - 5)) {
                 return (
                   <Images
+                    firstRef={firstRef}
                     key={`${key1}${key2}`}
                     item={item}
                     photo={image}
@@ -86,6 +81,16 @@ const LoadingBox = ({ isLoading, data, exampleSearch, colorScheme, moreSubmissio
                     colorScheme={colorScheme}
                   />
                 );
+              } else {
+                return (
+                  <Images
+                  key={`${key1}${key2}`}
+                  item={item}
+                  photo={image}
+                  count={`${key1}-${key2}`}
+                  colorScheme={colorScheme}
+                />
+                )
               }
             })
           })}
@@ -94,17 +99,16 @@ const LoadingBox = ({ isLoading, data, exampleSearch, colorScheme, moreSubmissio
             [1, 2, 3, 4, 5, 6].map((i) => {
               if (i === 1) {
                 return <Skeleton key={i}
-                ref={firstRef}
-                m={3}
-                height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
-                width={"90%"} />
+                  m={3}
+                  height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
+                  width={"90%"} />
               } else {
                 return <Skeleton key={i}
-                m={3}
-                height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
-                width={"90%"} />
+                  m={3}
+                  height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
+                  width={"90%"} />
               }
-          })
+            })
 
           }
         </MasonryLayout>

@@ -6,6 +6,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
+      
       <body className='text-font'>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />
