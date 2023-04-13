@@ -7,6 +7,7 @@ const useLocalStorage = () => {
         refreshToken: "reddit-refresh-token",
         colorScheme: "picroll-default-color-scheme",
         nsfw: "picroll-is-nsfw-enabled",
+        favouriteSubreddits: "picroll-favourite-subreddit-list"
     }
 
     const [accessToken, setAccessToken] = useState("");
@@ -14,6 +15,12 @@ const useLocalStorage = () => {
     const [refreshToken, setRefreshToken] = useState("");
     const [colorScheme, setColorScheme] = useState("");
     const [isNsfwEnabled, setNsfw] = useState("");
+
+    useEffect(() => {
+        if (localStorage.getItem(KEYS.nsfw) === null) {
+            localStorage.setItem(KEYS.nsfw, "0")
+        }
+    }, [])
 
     useEffect(() => {
         setAccessToken(() => localStorage.getItem(KEYS.accessToken));
@@ -37,7 +44,7 @@ const useLocalStorage = () => {
                         setColorScheme(() => localStorage.getItem(KEYS.colorScheme));
                         break;
                     case KEYS.nsfw:
-                        setNsfw(localStorage.getItem(KEYS.nsfw));
+                        setNsfw(localStorage.getItem(KEYS.nsfw) === "0" ? true : false );
                         break;
                     default:
                         break;

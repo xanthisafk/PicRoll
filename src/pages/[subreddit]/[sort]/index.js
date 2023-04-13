@@ -7,6 +7,8 @@ import {
     HStack,
     IconButton,
     Input,
+    InputGroup,
+    InputLeftElement,
     Select,
     Text,
     useDisclosure,
@@ -26,6 +28,9 @@ import { useRedditData } from '@/hooks/useRedditData';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import Backdrop from '@/components/Backdrop';
 import SettingsModal from '@/components/SettingsModal';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import useFavourites from '@/hooks/useFavourites';
+import { StarIcon } from '@chakra-ui/icons';
 
 
 export default function Page() {
@@ -35,13 +40,14 @@ export default function Page() {
 
     const { colorScheme, changeColorScheme, gradient } = useColorScheme();
     const ls = useLocalStorage();
+    const favourite = useFavourites(subreddit);
 
     const subredditRef = useRef();
     const sortingRef = useRef();
 
     const { data, fetchMore, resetData, loading, hasMore } = useRedditData(subreddit, sort, ls.isNsfwEnabled);
 
-    const siteTitle = `${subreddit} - ${META.title}`
+    const siteTitle = !subreddit ? META.title : `${subreddit} - ${META.title}`
 
     const exampleSearch = () => null
 
@@ -85,6 +91,31 @@ export default function Page() {
                             mx={5}
                         >
                             <form onSubmit={redirectUser}>
+                                <InputGroup>
+                                <InputLeftElement
+                                    onClick={() => {
+                                        favourite.isCurrentSubredditFavourite
+                                        ? favourite.remove(subreddit)
+                                        : favourite.add(subreddit)
+                                    }}
+                                    cursor={"pointer"}
+                                    transition={".2s"}
+                                    _hover={{
+                                        transform: "scale(1.1)"
+                                    }}
+                                    _active={{
+                                        transform: "scale(1)"
+                                    }}
+                                >
+                                    <StarIcon
+                                        color={
+                                            favourite.isCurrentSubredditFavourite
+                                            ? `${colorScheme}.400`
+                                            : "gray"
+                                        }
+
+                                    />
+                                </InputLeftElement>
                                 <Input
                                     ref={subredditRef}
                                     defaultValue={subreddit}
@@ -92,6 +123,7 @@ export default function Page() {
                                     type={"text"}
                                     placeholder={"subreddit name"}
                                 />
+                                </InputGroup>
                                 <Select
                                     ref={sortingRef}
                                     my={1}

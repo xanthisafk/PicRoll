@@ -1,8 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
 import meta from '../data/meta.json';
+import NextScript from 'next/script';
 
 const PicRollHead = ({title}) => {
+  const MEASUREMENT_ID = process.env.NEXT_PUBLIC_GOOGLE_GTAG_MEASUREMENT_ID;
   return (
     <Head>
         <title>{title ?? meta.title}</title>
@@ -23,6 +25,18 @@ const PicRollHead = ({title}) => {
         <meta name="twitter:card" content="/logo_hq.png" />
 
         <link rel="icon" href="/favicon.ico" />
+        <NextScript
+          id={"google-analytics"}
+          src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
+        >{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', ${MEASUREMENT_ID});
+          `}
+        </NextScript>
+        
       </Head>
   )
 }

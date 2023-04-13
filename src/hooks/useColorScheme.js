@@ -121,7 +121,7 @@ const useColorScheme = () => {
 
     useEffect(() => {
         if (localStorage.getItem(key) === null) {
-            changeColorScheme("orange");
+            changeColorScheme("cyan");
         }
         setColorScheme(() => localStorage.getItem(key));
         window.addEventListener("storage", event => {

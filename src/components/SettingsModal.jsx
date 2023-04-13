@@ -52,7 +52,7 @@ const SettingsModal = ({
                             <Text>Disable NSFW</Text>
                             <Switch
                                 colorScheme={colorScheme}
-                                defaultChecked={nsfw === "1" ? false : true}
+                                defaultChecked={!nsfw}
                                 onChange={toggleNsfwInLocalStorage}
                             />
                         </HStack>

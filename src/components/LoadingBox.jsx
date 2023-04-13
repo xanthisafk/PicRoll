@@ -70,7 +70,7 @@ const LoadingBox = ({ isLoading, data, exampleSearch, colorScheme, moreSubmissio
         <MasonryLayout>
           {data.map((item, key1) => {
             return item.images.map((image, key2) => {
-              if ((data.length > 5) && (key1 === data.length - 5)) {
+              if ((data.length > 10) && (key1 === data.length - 10)) {
                 return (
                   <Images
                     firstRef={firstRef}
