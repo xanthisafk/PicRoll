@@ -12,7 +12,7 @@ export default function Subreddit() {
     const router = useRouter();
     const { subreddit } = router.query;
     const defaultSort = "hot";
-    const { gradient } = useColorScheme();
+    const { gradient, colorScheme } = useColorScheme();
     useEffect(() => {
         if (!subreddit) return;
         router.push(`/${subreddit}/${defaultSort}`);
@@ -21,7 +21,7 @@ export default function Subreddit() {
     return (
         <>
         <PicRollHead />
-        <Backdrop gradient={gradient} />
+        <Backdrop gradient={gradient} colorScheme={colorScheme} />
         <main>
         <Flex
             width={"100vw"}

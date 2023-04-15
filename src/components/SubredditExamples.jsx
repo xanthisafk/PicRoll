@@ -1,4 +1,3 @@
-import React from 'react'
 import SubredditCard from './SubredditCard';
 import examples from '../data/exampleData.json';
 
@@ -10,7 +9,6 @@ const SubredditExamples = () => {
       <SubredditCard
         key={index}
         data={sub}
-      //   searchSomething={props.searchSomething}
       />
     );
   })}

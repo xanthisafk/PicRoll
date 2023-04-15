@@ -2,9 +2,13 @@ import React from 'react';
 import Head from 'next/head';
 import meta from '../data/meta.json';
 import NextScript from 'next/script';
+import { useToken } from '@chakra-ui/react';
 
-const PicRollHead = ({title}) => {
+const PicRollHead = ({title, colorScheme}) => {
   const MEASUREMENT_ID = process.env.NEXT_PUBLIC_GOOGLE_GTAG_MEASUREMENT_ID;
+
+  const [themeColor] = useToken('colors', [`${colorScheme}.400`]);
+
   return (
     <Head>
         <title>{title ?? meta.title}</title>
@@ -23,6 +27,8 @@ const PicRollHead = ({title}) => {
         <meta name="twitter:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
         <meta name="twitter:image" content="/logo_hq.png" />
         <meta name="twitter:card" content="/logo_hq.png" />
+
+        <meta name="theme-color" content={themeColor} />
 
         <link rel="icon" href="/favicon.ico" />
         <NextScript

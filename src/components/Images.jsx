@@ -5,9 +5,7 @@ import {
     keyframes,
     useDisclosure
 } from '@chakra-ui/react';
-import NextImage from 'next/image'
 import ImageInfoPanel from './ImageInfoPanel';
-import { gradientHelper } from '@/lib/gradientHelper';
 
 function Images({ item, photo, colorScheme, firstRef }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,15 +36,11 @@ function Images({ item, photo, colorScheme, firstRef }) {
             transition={".2s"}
             backgroundClip={"padding-box"}
             backgroundSize={"400% 400%"}
-            border={"8px solid transparent"}
             borderRadius={20}
             _hover={{
                 animation: animation,
                 content: "''",
                 width: "100%",
-                //backgroundColor: `${colorScheme}.300`,
-                // backgroundImage: "linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%)",
-                //backgroundImage: gradientHelper(colorScheme),
                 borderRadius: 20,
                 boxShadow:"dark-lg"
             }}
@@ -54,6 +48,7 @@ function Images({ item, photo, colorScheme, firstRef }) {
 
             <ChakraImage
                 className={"image"}
+                loading={"lazy"}
                 width={"100%"}
                 onClick={onOpen}
                 fallback={<Skeleton width={"100%"} height={"30vh"} />}

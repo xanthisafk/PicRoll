@@ -10,7 +10,6 @@ import {
     InputGroup,
     InputLeftElement,
     Select,
-    Text,
     useDisclosure,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
@@ -28,7 +27,6 @@ import { useRedditData } from '@/hooks/useRedditData';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import Backdrop from '@/components/Backdrop';
 import SettingsModal from '@/components/SettingsModal';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import useFavourites from '@/hooks/useFavourites';
 import { StarIcon } from '@chakra-ui/icons';
 
@@ -64,7 +62,7 @@ export default function Page() {
 
     return (
         <>
-            <PicRollHead title={siteTitle} />
+            <PicRollHead title={siteTitle} colorScheme={colorScheme} />
             <Backdrop gradient={gradient} />
             <main style={{ minHeight: "100vh" }}>
                 <ScrollToTop colorScheme={colorScheme} />
@@ -139,11 +137,13 @@ export default function Page() {
                                         type={"submit"}
                                         width={"90%"}
                                         colorScheme={colorScheme}
+                                        aria-label={"search"}
                                     >{`Let's Roll`}</Button>
                                     <IconButton
                                         width={"20%"}
                                         icon={<BiSliderAlt />}
                                         onClick={settingModalTriggers.onOpen}
+                                        aria-label={"open settings"}
                                     />
                                 </HStack>
                             </form>

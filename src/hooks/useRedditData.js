@@ -11,6 +11,7 @@ const useRedditData = (subreddit, sort, nsfw) => {
 
     useEffect(() => {
         if (!subreddit || !sort || !nsfw) return;
+        
         resetData();
         fetchData();
     }, [subreddit, sort, nsfw]);

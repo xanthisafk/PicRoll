@@ -18,16 +18,16 @@ const useLocalStorage = () => {
 
     useEffect(() => {
         if (localStorage.getItem(KEYS.nsfw) === null) {
-            localStorage.setItem(KEYS.nsfw, "0")
+            localStorage.setItem(KEYS.nsfw, "1")
         }
-    }, [])
+    }, [KEYS.nsfw])
 
     useEffect(() => {
         setAccessToken(() => localStorage.getItem(KEYS.accessToken));
         setExpiryDate(() => localStorage.getItem(KEYS.expiryDate));
         setRefreshToken(() => localStorage.getItem(KEYS.refreshToken));
         setColorScheme(() => localStorage.getItem(KEYS.colorScheme));
-        setNsfw(() => localStorage.getItem(KEYS.nsfw));
+        setNsfw(() => localStorage.getItem(KEYS.nsfw) === "1" ? true : false);
         const handleStorageChange = (event) => {
             if (event.storageArea === localStorage) {
                 switch (event.key) {
@@ -44,14 +44,13 @@ const useLocalStorage = () => {
                         setColorScheme(() => localStorage.getItem(KEYS.colorScheme));
                         break;
                     case KEYS.nsfw:
-                        setNsfw(localStorage.getItem(KEYS.nsfw) === "0" ? true : false );
+                        setNsfw(localStorage.getItem(KEYS.nsfw) === "1" ? true : false );
                         break;
                     default:
                         break;
                 }
             }
         };
-
         window.addEventListener('storage', handleStorageChange);
 
         return () => {

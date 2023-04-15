@@ -7,21 +7,20 @@ import {
     useColorModeValue,
     usePrefersReducedMotion,
 } from '@chakra-ui/react';
-import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-import { getColorScheme } from '../lib/colorSchemeHandler'
-
 import meta from '../data/meta.json';
 import footer from '../data/footer.json';
-import logo from '../../public/logo.jpg';
+import Logo from './Logo';
+import useColorScheme from '@/hooks/useColorScheme';
+import { useRouter } from 'next/router';
 
 function Footer() {
     const linkColor = useColorModeValue('gray.900', 'gray.100');
     const hoverColor = useColorModeValue('gray.700', 'gray.300');
 
-    const colorScheme = getColorScheme();
+    const { colorScheme } = useColorScheme();
 
     const openUrl = (url) => window.open(url);
 
@@ -36,17 +35,18 @@ function Footer() {
             borderTop="2px solid gray"
             padding={6}
         >
-            <Box padding={5} width={250} borderRadius="lg">
-                <Image src={logo} alt="logo of website" />
+            <Box padding={5} width={250} borderRadius="lg" onClick={() => openUrl("/")}>
+                <Logo />
             </Box>
             <Box padding={5}>
                 <Text
                     fontSize="6xl"
                     color={`${colorScheme}.300`}
-                    fontFamily={`"Fasthand", cursive`}
+                    className={"title-font"}
                 >
                     {meta.title}
                 </Text>
+                <Text fontSize={"sm"}>v{meta.version}</Text>
                 <ChakraLink
                     fontSize="sm"
                     cursor="pointer"

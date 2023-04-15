@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ArrowUpIcon } from '@chakra-ui/icons';
 import { Box, IconButton } from '@chakra-ui/react';
 
-import { getColorScheme } from '../lib/colorSchemeHandler';
-
 import meta from '../data/meta.json'
 
 const ScrollToTop = ({colorScheme}) => {

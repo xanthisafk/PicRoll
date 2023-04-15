@@ -11,24 +11,17 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
     ModalBody,
-    ModalCloseButton,
     Image,
     Flex,
     Box,
     Text,
     Button,
     HStack,
-    usePrefersReducedMotion,
     ModalFooter,
-    VStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
-import meta from '../data/meta.json'
-import { getColorScheme } from '../lib/colorSchemeHandler'
-import { gradientHelper } from '@/lib/gradientHelper';
 
 const ImageInfoModal = ({ isOpen, onClose, colorScheme, data, setter, toast, photo }) => {
     const { title, domain, permalink, upvote_ratio, created, author, upvotes } = data;

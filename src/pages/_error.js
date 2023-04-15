@@ -16,7 +16,7 @@ const Error = ({statusCode}) => {
 
     return (
         <>
-            <PicRollHead title={`${statusCode} - PicRoll`} />
+            <PicRollHead title={`${statusCode} - PicRoll`} colorScheme={colorScheme} />
             <Flex
                 width={"100vw"}
                 height={"100vh"}
