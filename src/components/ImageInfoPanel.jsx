@@ -10,7 +10,6 @@ import {
     Box,
     HStack,
     IconButton,
-    useDisclosure,
     useToast
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -18,21 +17,25 @@ import ImageInfoModal from './ImageInfoModal';
 import copyToClipboard from '@/lib/copyToClipboard';
 import downloadImage from '@/lib/downloadImage';
 
-function ImageInfoPanel({ submission }) {
+import meta from '../data/meta.json'
+
+function ImageInfoPanel({ submission, colorScheme, onOpen, isOpen, onClose, photo }) {
     const [copied, setCopied] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
     const toast = useToast();
-    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <Box
             className={"image-info-panel"}
             position={"absolute"}
             top={1}
             right={1}
+            padding={2}
             transition={".2s ease-in-out"}
         >
             <ImageInfoModal
+                colorScheme={colorScheme}
                 data={submission}
+                photo={photo}
                 isOpen={isOpen}
                 onClose={onClose}
                 setter={setDownloaded}
@@ -41,28 +44,32 @@ function ImageInfoPanel({ submission }) {
 
             <HStack>
                 <IconButton
-                    aria-label="open image information popup"
+                    aria-label={meta.viewInfoButtonText}
+                    title={meta.viewInfoButtonText}
                     icon={<InfoOutlineIcon />}
-                    colorScheme="orange"
+                    colorScheme={colorScheme}
                     onClick={onOpen}
                 />
                 <IconButton
-                    aria-label="open submission on reddit in new tab"
+                    aria-label={meta.externalButtonText}
+                    title={meta.externalButtonText}
                     icon={<ExternalLinkIcon />}
-                    colorScheme="orange"
+                    colorScheme={colorScheme}
                     onClick={() => window.open(submission.permalink)}
                 />
                 <IconButton
-                    aria-label="copy image url"
+                    aria-label={meta.copyLinkButtonText}
+                    title={meta.copyLinkButtonText}
                     icon={copied ? <CheckIcon color={'green.300'} /> : <CopyIcon />}
-                    colorScheme="orange"
-                    onClick={() => copyToClipboard(submission.url, setCopied, toast)}
+                    colorScheme={colorScheme}
+                    onClick={() => copyToClipboard(photo, setCopied, toast)}
                 />
                 <IconButton
-                    aria-label="download image"
+                    aria-label={meta.downloadButtonText}
+                    title={meta.downloadButtonText}
                     icon={downloaded ? <CheckIcon color={'green.300'} /> : <DownloadIcon />}
-                    colorScheme="orange"
-                    onClick={() => downloadImage(submission.url, setDownloaded, toast)}
+                    colorScheme={colorScheme}
+                    onClick={() => downloadImage(photo, setDownloaded, toast)}
                 />
             </HStack>
         </Box>

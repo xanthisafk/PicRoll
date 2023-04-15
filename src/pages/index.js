@@ -1,227 +1,142 @@
-/* eslint-disable react/no-children-prop */
-import Head from 'next/head'
-import Image from 'next/image'
-import meta from '../data/meta.json'
-
-import sort from '../data/sort.json'
+import PicRollHead from '@/components/Head'
+import Logo from '@/components/Logo'
 import {
   Box,
   Button,
+  Container,
   Flex,
+  HStack,
   IconButton,
   Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
   Select,
   Text,
-  useColorMode,
+  useDisclosure,
   useToast
-} from '@chakra-ui/react';
-import logo from '../../public/logo.jpg'
-import "@fontsource/fasthand"
-import { CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { useRef, useState } from 'react';
-import LoadingBox from '../components/LoadingBox';
-import extractSubredditName from '../lib/extractSubredditName';
-import ScrollToTop from '@/components/ScrollToTop';
-import Footer from '@/components/Footer';
+} from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { useRef } from 'react'
+import { BiSliderAlt } from 'react-icons/bi';
 
+import sort from '../data/sort.json';
+import useColorScheme from '@/hooks/useColorScheme'
+import extractSubredditName from '@/lib/extractSubredditName'
+import { toastErrorMessage } from '@/lib/toastErrorMessage'
+import Backdrop from '@/components/Backdrop'
+import SettingsModal from '@/components/SettingsModal'
+import useLocalStorage from '@/hooks/useLocalStorage'
 
-export default function Home() {
+import FOOT from '@/data/footer.json';
 
-  const { colorMode, toggleColorMode } = useColorMode();
-
-  const subredditRef = useRef("");
-  const sortRef = useRef("");
-  const [isLoading, setLoading] = useState(false);
-  const [siteTitle, setSiteTitle] = useState(meta.title)
-  const [data, setData] = useState([]);
-
+const Home = () => {
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const searchRef = useRef();
+  const sortRef = useRef();
   const toast = useToast();
+  const settingModalTriggers = useDisclosure();
+  const ls = useLocalStorage();
 
-  /**
- * Handles the form submission event by preventing the default behavior and calling the handleClick function.
- * @param {Object} event - The form submission event object.
- */
-  const handleSubmit = (event) => {
+  const routeUser = (event) => {
     event.preventDefault();
-    handleClick();
-  }
-
-  /**
-  * Sets the loading state to true, calls fetchHandler, and then sets the loading state to false
-  */
-  const handleClick = async () => {
-    setLoading(() => true);
-    await fetchHandler();
-    setLoading(() => false);
-  }
-
-  /**
-  * Function to display an error toast message
-  * @param {object} options - The options for the error toast message.
-  * @param {string} options.message - The error message to be displayed.
-  * @param {number} options.duration - The duration of the toast message.
-  * @param {boolean} options.isClosable - Whether the toast message is closable or not.
-  * @returns {void}
-  */
-  const toastErrorMessage = ({ message, duration = 9000, isClosable = true }) => {
-    toast({
-      status: "error",
-      title: "error",
-      description: message,
-      duration,
-      isClosable
-    })
-  }
-
-  /**
-   * This function performs an asynchronous fetch request to the server to get images data from a specific subreddit based on the chosen sorting method. If there is an error, it calls toastErrorMessage function with the error message. Otherwise, it updates the state of data and siteTitle variables with the retrieved data and sets the page title accordingly.
-   * @returns {Promise<void>}
-   */
-  const fetchHandler = async () => {
-    const subreddit = extractSubredditName(subredditRef.current.value);
-    if (!subreddit) { return alert("You did not enter a subreddit.") }
+    const sub = searchRef.current.value;
+    if (!sub) {
+      toastErrorMessage({ message: "Please enter a subreddit." }, toast);
+    }
     const sort = sortRef.current.value;
 
-    let error = false;
-    const data = await fetch(`/api/v1/get_images/${subreddit}/${sort}`)
-      .then(res => res.json())
-      .then(res => {
-        error = res.error;
-        return res.data;
-      })
-      .catch(console.error)
+    const subreddit = extractSubredditName(sub);
+    router.push(`/${subreddit}/${sort}/`);
 
-    if (error) {
-      toastErrorMessage(data);
-    } else {
-      setData(() => data);
-      setSiteTitle(() => `${subreddit} - ${meta.title}`)
-    }
   }
-
-  /**
-  * Searches for a subreddit and triggers the handle click event with the subreddit value
-  * @param {string} subreddit - The subreddit to search for
-  * @returns {Promise<void>}
-  */
-  const searchSomething = async (subreddit) => {
-    subredditRef.current.value = subreddit;
-    handleClick();
-  }
-
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-        <meta name="description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta name="keywords" content={meta.keywords.replace("%%APPNAME%%", meta.title)} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="icons/icon-512x512.png"></link>
-
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta property="og:image" content="/logo_hq.png" />
-        <meta property="og:url" content="https://picroll.vercel.app" />
-
-        <meta name="twitter:title" content={meta.title} />
-        <meta name="twitter:description" content={meta.description.replace("%%APPNAME%%", meta.title)} />
-        <meta name="twitter:image" content="/logo_hq.png" />
-        <meta name="twitter:card" content="/logo_hq.png" />
-
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main style={{ minHeight: "100vh" }}>
-        <ScrollToTop />
+      <PicRollHead colorScheme={colorScheme.colorScheme} />
+      <Backdrop gradient={colorScheme.gradient} />
+      <main>
         <Flex
-          height={"15vh"}
-          width={"100%"}
+          width={"100vw"}
+          height={"100vh"}
+          direction={"column"}
+          justify={"center"}
           align={"center"}
-          justify={"space-evenly"}
         >
-          {/* Logo */}
           <Box
-            padding={3}
-            width={100}
-            borderRadius={"lg"}
-            onClick={() => window.location = "/"}
+            width={200}
+            minW={50}
             cursor={"pointer"}
+            onClick={() => router.push("/")}
+            marginBottom={5}
           >
-            <Image priority src={logo} alt="logo of website" />
-            <Text
-              textAlign={"center"}
-              fontFamily={`"Fasthand", cursive`}
-              fontSize={"2xl"}
-              paddingY={1}
-              color={"orange.300"}
-            >{meta.title}</Text>
+            <Logo />
           </Box>
-
-          <Box
-            flexGrow={1}
-            height={"100%"}
-            paddingY={3}
-            paddingRight={3}
+          <Container
+            size={"xl"}
           >
-            {/* Search box */}
-            <form onSubmit={handleSubmit}>
-              <InputGroup padding={2}>
-                <InputLeftAddon children={meta.searchLeadingText} />
-                <Input
-                  ref={subredditRef}
-                  variant={'outline'}
-                  placeholder={meta.searchPlaceholder}
-                />
-                <InputRightAddon
-                  cursor={"pointer"}
-                  title={"Clear input"}
-                  onClick={() => { subredditRef.current.value = "" }}
-                >
-                  <CloseIcon color={"red.400"} />
-                </InputRightAddon>
-              </InputGroup>
-            </form>
+            <form onSubmit={routeUser}>
+              <Input
+                ref={searchRef}
+                placeholder={"subreddit name"}
+                fontSize={"lg"}
+                my={1}
+              />
 
-            <Flex direction={"row-reverse"}>
-              {/* Search button */}
-              <Button
-                margin={2}
-                colorScheme={"orange"}
-                onClick={handleClick}
-                aria-label='search'
-              >{meta.searchButtonText}</Button>
-
-              {/* Sort Select */}
               <Select
-                width={{ base: "100%", lg: "20%", md: "40%" }}
-                margin={2}
                 ref={sortRef}
+                fontSize={"lg"}
+                my={3}
               >
                 {sort.map((item, index) => (
                   <option key={index} value={item.value}>{item.text}</option>
                 ))}
               </Select>
 
-              <IconButton
-                margin={2}
-                onClick={toggleColorMode}
-                aria-label='toggle theme'
-                icon={
-                  colorMode === 'dark' ? <SunIcon color={"orange.400"} /> : <MoonIcon color={"blue.200"} />
-                }
-              />
-
-            </Flex>
-
-          </Box>
+              <HStack my={3}>
+                <Button
+                  type={"submit"}
+                  width={"90%"}
+                  colorScheme={colorScheme.colorScheme}
+                >{`Let's Roll`}</Button>
+                <IconButton
+                  width={"10%"}
+                  icon={<BiSliderAlt />}
+                  onClick={settingModalTriggers.onOpen}
+                ></IconButton>
+              </HStack>
+            </form>
+            <Text
+              cursor={"pointer"}
+              textAlign={"center"}
+              _hover={{
+                "text-decoration": "underline"
+              }}
+              onClick={() => router.push(FOOT.github)}
+            >{FOOT.text} {FOOT.author}</Text>
+            <Text
+              cursor={"pointer"}
+              fontStyle={"italic"}
+              fontSize={"xs"}
+              textAlign={"center"}
+              _hover={{
+                "text-decoration": "underline"
+              }}
+              onClick={() => router.push(FOOT.projectUrl)}
+            >
+              {FOOT.projectSourceText}
+            </Text>
+          </Container>
         </Flex>
-
-        <LoadingBox isLoading={isLoading} data={data} searchSomething={searchSomething} />
+        <SettingsModal
+          onClose={settingModalTriggers.onClose}
+          isOpen={settingModalTriggers.isOpen}
+          KEYS={ls.KEYS}
+          colorScheme={colorScheme.colorScheme}
+          colorSchemeChange={colorScheme.changeColorScheme}
+          nsfw={ls.isNsfwEnabled}
+          toggleNsfw={ls.setItem}
+        />
       </main>
-      <Footer />
     </>
   )
 }
+
+export default Home

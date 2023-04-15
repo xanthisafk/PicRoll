@@ -127,11 +127,12 @@ _Currently there is an issue where image keeps changing their position in grid w
 
 ## Future features
 
-- [x] Masonry grid
-- [ ] Infinte scroll
-- [ ] NSFW detection
-- [ ] More customizability
-- [ ] Better layout
+- v2.1
+    - [x] Masonry grid
+    - [x] Infinte scroll
+    - [x] NSFW detection
+    - [x] More customizability
+    - [x] Better layout
 
 
 ## Why

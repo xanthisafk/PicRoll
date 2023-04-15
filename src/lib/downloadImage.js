@@ -11,16 +11,25 @@ const downloadImage = async (url, setter, toast) => {
   setter(() => true);
 
   const name = url.split("/");
-  await fetch(`/api/v1/download/${encodeURIComponent(url)}`)
-    .then(res => res.blob())
-    .then(blob => {
-      saveBlob(blob, name[name.length - 1]);
-    });
+  let error = false;
+  const blob = await fetch(`/api/v1/download/${encodeURIComponent(url)}`)
+    .then(res => {
+      if (!res.ok) {
+        error = true;
+        return res.json()
+      }
+      return res.blob();
+    })
+
+  if (!error) {saveBlob(blob, name[name.length - 1]);}
 
   toast({
-    title: "Image downloaded.",
-    status: "success",
-    duration: 3000,
+    title: error ? "Could not download image": "Image downloaded!",
+    status: error ? "error" : "success",
+    description: error
+      ? "Can not download file bigger than 4MB. Please right click or long press the image to download." 
+      : "",
+    duration: error ? 9000 : 3000,
     isClosable: true
   });
 

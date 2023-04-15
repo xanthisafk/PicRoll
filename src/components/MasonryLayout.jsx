@@ -1,14 +1,19 @@
-import { Box } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 function MasonryLayout({ children }) {
   return (
-    <Box
-      sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
-      padding={4}
-      width="100%"
+    <ResponsiveMasonry
+      columnsCountBreakPoints={{350: 2, 900: 3}}
+      style={{
+        width: "100%",
+        padding: "16px"
+      }}
     >
-      {children}
-    </Box>
+      <Masonry>
+        {children}
+      </Masonry>
+    </ResponsiveMasonry>
   );
 }
 

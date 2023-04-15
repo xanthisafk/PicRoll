@@ -1,9 +1,13 @@
 {
-    "690": "Subreddit is marked as NSFW. Please verify age.",
-    "403": "I am not authorized to view this subreddit. Perhaps it is a private subreddit?",
+    "403": "Subreddit is private.",
     "400": "Invalid sorting option. Valid sorting options are one of: new, hot, hour, day, week, month, year & all.",
-    "404": "This subreddit does not exist.",
-    "451": "This subreddit is blocked in this reigon.",
+    "400.after": "Invalid full name of thing. Thing full name must start with `t3_`. Read more: https://www.reddit.com/dev/api/oauth",
+    "400.1": "Error parsing request body.",
+    "404": "Subreddit is empty or does not exist.",
+    "405": "Request method must only be of type POST.",
+    "413": "File size exceeds the maximum limit of 4MB. Please choose a smaller file.",
+    "451": "Subreddit is blocked in this reigon.",
+    "422": "Subreddit is banned.",
     "500": "An unknown error occured.",
-    "banned": "Subreddit is banned."
+    "498": "State was changed during authorization. Taking you back to home page..."
 }

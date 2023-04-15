@@ -1,8 +1,44 @@
+:root {
+    --image-border: 8px ; /* 2 in chakra UI */
+}
+
+.image {
+    transform: scale(1)
+}
+
+.image-box:active .image {
+    transform: scale(0.99);
+}
+
 .image-info-panel {
     opacity: 0;
     transition: .2s ease-in-out;
 }
 
-.image-box:hover .image-info-panel {
-    opacity: 1;
+.title-font {
+    font-family: "League Spartan", sans-serif;
+}
+
+.text-font {
+    font-family: "Aileron", sans-serif;
+}
+
+.icon {
+    margin-bottom: 5px;
+}
+
+
+@media screen and (min-width: 900px) {
+    .image-box:hover .image-info-panel {
+        opacity: 1;
+    }
+}
+
+.bg-gradient {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -5;
+    background-color: gray;
+    filter: blur(75px);
 }

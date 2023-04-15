@@ -5,20 +5,26 @@ import {
     Text,
     Link as ChakraLink,
     useColorModeValue,
+    usePrefersReducedMotion,
 } from '@chakra-ui/react';
-import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import meta from '../data/meta.json';
 import footer from '../data/footer.json';
-import logo from '../../public/logo.jpg';
+import Logo from './Logo';
+import useColorScheme from '@/hooks/useColorScheme';
+import { useRouter } from 'next/router';
 
 function Footer() {
     const linkColor = useColorModeValue('gray.900', 'gray.100');
     const hoverColor = useColorModeValue('gray.700', 'gray.300');
 
+    const { colorScheme } = useColorScheme();
+
     const openUrl = (url) => window.open(url);
+
+    const shouldAnimate = usePrefersReducedMotion();
 
     return (
         <Flex
@@ -29,17 +35,18 @@ function Footer() {
             borderTop="2px solid gray"
             padding={6}
         >
-            <Box padding={5} width={250} borderRadius="lg">
-                <Image src={logo} alt="logo of website" />
+            <Box padding={5} width={250} borderRadius="lg" onClick={() => openUrl("/")}>
+                <Logo />
             </Box>
             <Box padding={5}>
                 <Text
                     fontSize="6xl"
-                    color="orange.300"
-                    fontFamily={`"Fasthand", cursive`}
+                    color={`${colorScheme}.300`}
+                    className={"title-font"}
                 >
                     {meta.title}
                 </Text>
+                <Text fontSize={"sm"}>v{meta.version}</Text>
                 <ChakraLink
                     fontSize="sm"
                     cursor="pointer"
@@ -66,7 +73,7 @@ function Footer() {
                         onClick={() => openUrl(footer.github)}
                         aria-label="open author's GitHub"
                         fontSize="2xl"
-                        transition=".1s ease-in-out"
+                        transition={shouldAnimate && ".1s ease-in-out"}
                         cursor="pointer"
                         title="Open author's GitHub"
                         _hover={{ color: hoverColor }}

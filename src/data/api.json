@@ -1,0 +1,228 @@
+{
+    "about": {
+        "name": "PicRoll",
+        "version": "v2.1",
+        "url": "https://github.com/xanthisafk/picroll",
+        "api_version": "v1",
+        "author": {
+            "name": "Abhinav Shrivastava",
+            "url": "https://github.com/xanthisafk"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "/LICENSE.txt"
+        }
+    },
+    "docs": [
+        {
+            "route": "/api/v1",
+            "description": "Lists all available routes.",
+            "method": "GET",
+            "parameters": [],
+            "errors": [],
+            "example": {
+                "request": "/api/",
+                "response": "This response."
+            }
+        },
+        {
+            "route": "/api/v1/ping/",
+            "description": "Replies with pong.",
+            "method": "GET",
+            "parameters": [],
+            "errors": [],
+            "example": {
+                "request": "/api/v1/ping/",
+                "response": {
+                    "message": "Pong!"
+                }
+            }
+        },
+        {
+            "route": "/api/v1/download/{URL}",
+            "description": "Downloads the given URL bypassing CORS restrictions. URL must be encoded.",
+            "method": "GET",
+            "parameters": [
+                {
+                    "name": "URL",
+                    "type": "string",
+                    "description": "URL that needs to be downloaded.",
+                    "optional": false
+                }
+            ],
+            "errors": [],
+            "example": {
+                "request": "/api/v1/download/https%3A%2F%2Fi.redd.it%2Fg2ddepwsckra1.png",
+                "response": "Downloads the image."
+            }
+        },
+        {
+            "route": "/api/v1/get_images/{subreddit}/{sort}/{after}?nsfw=true",
+            "description": "Retrieves the submissions from specified subreddit.",
+            "method": "GET",
+            "parameters": [
+                {
+                    "name": "subreddit",
+                    "type": "string",
+                    "description": "Name of subreddit.",
+                    "optional": false
+                },
+                {
+                    "name": "sort",
+                    "type": "string",
+                    "description": "Type of sort. Sorting options are one of: new, hot, hour, day, week, month, year & all.",
+                    "optional": true
+                },
+                {
+                    "name": "after",
+                    "type": "string",
+                    "description": "Retrieves data that comes after the given thing's full name. Read more about Reddit things: https://www.reddit.com/dev/api/oauth",
+                    "optional": true
+                },
+                {
+                    "name": "nsfw",
+                    "type": "string",
+                    "description": "Disables NSFW content. Must be either `true` or `false` (lowercase). It must be appended to string at the end as a query param. If param is empty or not `true`, it will be a false.",
+                    "optional": true
+                }
+            ],
+            "errors": [
+                {
+                    "status": 404,
+                    "reasons": [
+                        "Subreddit does not exist.",
+                        "Subreddit is empty."
+                    ]
+                },
+                {
+                    "status": 422,
+                    "reasons": [
+                        "Subreddit is banned."
+                    ]
+                },
+                {
+                    "status": 400,
+                    "reasons": [
+                        "Invalid sort parameter.",
+                        "Invalid after parameter."
+                    ]
+                }
+            ],
+            "example": {
+                "request": "/api/v1/get_images/justicemusic/all/",
+                "response": {
+                    "error": "false",
+                    "data": {
+                        "after": "t3_129v8d7",
+                        "posts": [
+                            {
+                                "title": "Skrillex , Gesaffelstein , Xavier (Justice)",
+                                "upvotes": 183,
+                                "upvote_ratio": 1,
+                                "author": "Meiner997",
+                                "permalink": "https://www.reddit.com/r/JusticeMusic/comments/oki3bn/skrillex_gesaffelstein_xavier_justice/",
+                                "created": 1626311143,
+                                "domain": "i.redd.it",
+                                "nsfw": false,
+                                "images": [
+                                    "https://i.redd.it/aw4u6o9xz9b71.jpg"
+                                ],
+                                "post_hint": "image"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "route": "/api/v1/auth/retrieve_token",
+            "description": "Retrieves Reddit token for this website. Parameters must in form of stringified json.",
+            "method": "POST",
+            "parameters": [
+                {
+                    "name": "access_token",
+                    "type": "string",
+                    "description": "Code provided by Reddit when initial authorization was granted.",
+                    "optional": false
+                }
+            ],
+            "errors": [
+                {
+                    "status": 405,
+                    "reasons": [
+                        "Method other than post was used."
+                    ]
+                },
+                {
+                    "status": 400,
+                    "reasons": [
+                        "Request body is invalid.",
+                        "Error parsing request body."
+                    ]
+                },
+                {
+                    "status": 500,
+                    "reasons": [
+                        "Internal server error.",
+                        "Client credentials given were invalid."
+                    ]
+                }
+            ],
+            "example": {
+                "request": "/api/v1/auth/retrieve_token/",
+                "response": {
+                    "access_token": "Your access token",
+                    "token_type": "bearer",
+                    "expires_in": "Unix Epoch Seconds",
+                    "scope": "A scope string",
+                    "refresh_token": "Your refresh token"
+                }
+            }
+        },
+        {
+            "route": "/api/v1/auth/refresh_token",
+            "description": "Refreshes Reddit token for this website. Parameters must in form of stringified json.",
+            "method": "POST",
+            "parameters": [
+                {
+                    "name": "refresh_token",
+                    "type": "string",
+                    "description": "Refresh token provided by Reddit.",
+                    "optional": false
+                }
+            ],
+            "errors": [
+                {
+                    "status": 405,
+                    "reasons": [
+                        "Method other than post was used."
+                    ]
+                },
+                {
+                    "status": 400,
+                    "reasons": [
+                        "Request body is invalid.",
+                        "Error parsing request body."
+                    ]
+                },
+                {
+                    "status": 500,
+                    "reasons": [
+                        "Internal server error.",
+                        "Client credentials given were invalid."
+                    ]
+                }
+            ],
+            "example": {
+                "request": "/api/v1/auth/refresh_token/",
+                "response": {
+                    "access_token": "Your access token",
+                    "token_type": "bearer",
+                    "expires_in": "Unix Epoch Seconds",
+                    "scope": "A scope string",
+                    "refresh_token": "Your refresh token"
+                }
+            }
+        }
+    ]
+}

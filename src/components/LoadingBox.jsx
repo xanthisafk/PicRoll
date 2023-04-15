@@ -1,93 +1,107 @@
-/* eslint-disable @next/next/no-img-element */
 import {
-  Box,
+  Divider,
   Flex,
-  HStack,
-  IconButton,
-  Image,
   Skeleton,
   Text,
-  useDisclosure
 } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
-import ImageInfoPanel from "./ImageInfoPanel";
-import SubredditCard from "./SubredditCard";
-import examples from "../data/exampleSubs.json";
-import meta from "../data/meta.json";
+import Images from "./Images";
+import { useCallback, useRef } from "react";
 
-const LoadingBox = (props) => {
-  const isLoading = props.isLoading ?? false;
-  const data = props.data ?? [];
+const LoadingBox = ({
+  isLoading,
+  data,
+  exampleSearch,
+  colorScheme,
+  moreSubmissions,
+  nextPage
+}) => {
+  const observer = useRef();
+  const firstRef = useCallback(node => {
+    if (observer.current) observer.current.disconnect(); // disconnect previous
+    if (isLoading) return; // dont attach if it is still loading
+    if (!moreSubmissions) return; // no need if there are no more submissions
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        nextPage();
+      }
+    })
+    if (node) observer.current.observe(node);
+  }, [isLoading, moreSubmissions])
 
   return (
     <>
-      {/* Show greeting message when isLoading is false and data is empty */}
-      {!isLoading && data.length === 0 && (
-        <Flex
-          position={"relative"}
-          width={"100%"}
-          minHeight={"0"}
-          marginY={3}
-          padding={3}
-          direction={"column"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          overflow={"auto"}
-          wrap={"wrap"}
-        >
-          <Text textAlign={"center"}>{meta.nothingLoadedText}</Text>
-          <Flex paddingTop={3} flexWrap={"wrap"} justify={"center"} gap={3}>
-            {examples.map((sub, index) => {
-              return (
-                <SubredditCard
-                  key={index}
-                  data={sub}
-                  searchSomething={props.searchSomething}
+      
+
+      <MasonryLayout>
+        {isLoading && data.length === 0 && [1, 2, 3, 4, 5, 6].map((_, i) =>
+          <Skeleton
+            key={i}
+            m={5}
+            height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
+          />
+        )}
+      </MasonryLayout>
+
+
+
+      {data.length > 0 && (
+        <MasonryLayout>
+          {data.map((item, key1) => {
+            return item.images.map((image, key2) => {
+              if ((data.length > 10) && (key1 === data.length - 10)) {
+                return (
+                  <Images
+                    firstRef={firstRef}
+                    key={`${key1}${key2}`}
+                    item={item}
+                    photo={image}
+                    count={`${key1}-${key2}`}
+                    colorScheme={colorScheme}
+                  />
+                );
+              } else {
+                return (
+                  <Images
+                  key={`${key1}${key2}`}
+                  item={item}
+                  photo={image}
+                  count={`${key1}-${key2}`}
+                  colorScheme={colorScheme}
                 />
-              );
-            })}
-          </Flex>
+                )
+              }
+            })
+          })}
+          {
+            moreSubmissions &&
+            [1, 2, 3, 4, 5, 6].map((i) => (
+                <Skeleton key={i}
+                  m={3}
+                  height={`${Math.floor(Math.random() * (60 - 40 + 1)) + 30}vh`}
+                  width={"90%"}
+                />
+            ))
+
+          }
+        </MasonryLayout>
+      )}
+      {data.length !== 0 && !moreSubmissions && (
+        <Flex
+          width={"100%"}
+          justify={"center"}
+          align={"center"}
+          direction={"column"}
+        >
+          <Divider width={"85%"} height={5} my={5} opacity={0} />
+          <Text
+            my={5}
+            fontSize={"2xl"}
+          >End of reel!</Text>
         </Flex>
       )}
-
-      {/* Show skeleton boxes when isLoading is true and data is empty */}
-      {isLoading && (
-        <MasonryLayout>
-          <Skeleton height="60vh" my="10px" />
-          <Skeleton height="45vh" my="10px" />
-          <Skeleton height="55vh" my="10px" />
-        </MasonryLayout>
-      )}
-
-      {/* Show data when isLoading is false and data is not empty */}
-      {!isLoading && data.length > 0 && (
-        <MasonryLayout>
-          {data.map((item, key) => {
-            return (
-              <Box
-                key={key}
-                className={"image-box"}
-                width={"100%"}
-                mb={2}
-                d={"inline-block"}
-                position={"relative"}
-              >
-                {item.type === "image" && (
-                  <Image
-                    width={"100%"}
-                    src={item.url}
-                    alt={item.title}
-                    borderRadius={"md"}
-                  />
-                )}
-                <ImageInfoPanel submission={item} />
-              </Box>
-            );
-          })}
-        </MasonryLayout>
-      )}
     </>
-  );
+  )
 };
 
 export default LoadingBox;
