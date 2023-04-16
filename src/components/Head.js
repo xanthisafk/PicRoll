@@ -30,7 +30,7 @@ const PicRollHead = ({title, colorScheme}) => {
 
         <meta name="theme-color" content={themeColor} />
 
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo_small.svg" />
         <NextScript
           id={"google-analytics"}
           src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
