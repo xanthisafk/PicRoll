@@ -30,6 +30,7 @@ import SettingsModal from '@/components/SettingsModal';
 import useFavourites from '@/hooks/useFavourites';
 import { StarIcon } from '@chakra-ui/icons';
 import extractSubredditName from '@/lib/extractSubredditName';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 
 export default function Page() {
@@ -71,6 +72,7 @@ export default function Page() {
             <PicRollHead title={siteTitle} colorScheme={colorScheme} />
             <Backdrop gradient={gradient} />
             <main style={{ minHeight: "100vh" }}>
+            <GoogleAnalytics />
                 <ScrollToTop colorScheme={colorScheme} />
                 <Box
                     display={"block"}
