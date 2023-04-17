@@ -29,6 +29,7 @@ import Backdrop from '@/components/Backdrop';
 import SettingsModal from '@/components/SettingsModal';
 import useFavourites from '@/hooks/useFavourites';
 import { StarIcon } from '@chakra-ui/icons';
+import extractSubredditName from '@/lib/extractSubredditName';
 
 
 export default function Page() {
@@ -53,10 +54,15 @@ export default function Page() {
 
     const redirectUser = (event) => {
         event.preventDefault();
-        const newSubreddit = subredditRef.current.value;
+        
+        const newSubreddit = extractSubredditName(subredditRef.current.value);
         const newSorting = sortingRef.current.value;
         resetData();
-        router.push(`/${newSubreddit}/${newSorting}`)
+        subredditRef.current.value = newSubreddit;
+        if (newSubreddit === subreddit && newSorting === sort) {
+            router.reload();
+        }
+        else {router.push(`/${newSubreddit}/${newSorting}`)}
     }
 
 
