@@ -7,6 +7,7 @@ import Logo from "@/components/Logo";
 import PicRollHead from "@/components/Head";
 import Backdrop from "@/components/Backdrop";
 import useColorScheme from "@/hooks/useColorScheme";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export default function Subreddit() {
     const router = useRouter();
@@ -23,6 +24,7 @@ export default function Subreddit() {
         <PicRollHead />
         <Backdrop gradient={gradient} colorScheme={colorScheme} />
         <main>
+        <GoogleAnalytics />
         <Flex
             width={"100vw"}
             height={"100vh"}

@@ -53,11 +53,19 @@ Enter a short description of your app. This is also not visible to Reddit users.
 
     Edit `.env.local` and add this
     ```env
-    REDDIT_USERNAME=Your username
-    REDDIT_PASSWORD=Your password
-    REDDIT_USER_AGENT="PicRoll/v2" # or whatever user-agent you want
-    REDDIT_CLIENT_ID=Your client id that you created earlier 
-    REDDIT_CLIENT_SECRET=Your client secret that you created earlier
+    # public
+    # Reddit Related
+    NEXT_PUBLIC_REDDIT_CLIENT_ID=Your Reddit Client ID
+    NEXT_PUBLIC_REDDIT_REDIRECT_URI=Your redirect URI. MUST MATCH THE URI YOU DEFINED.
+    NEXT_PUBLIC_REDDIT_SCOPE="identity mysubreddits" # this is default, however you can add any.
+
+    # Google Analytics
+    NEXT_PUBLIC_GOOGLE_GTAG_MEASUREMENT_ID="" # Leave blank and Google Analytics will be disabled.
+
+    # Non public
+    # Reddit Related
+    REDDIT_USER_AGENT="web:PicRoll:v2.2 (by /u/xxanthis)" # or anything you want however you should try to follow this rule of creating user agent (advised by Reddit)
+    REDDIT_CLIENT_SECRET=Your Reddit Client Secret
     ```
 
 3. Install dependencies
@@ -119,10 +127,8 @@ If everything went right, your app would be running on [http://localhost:3000](h
 - Enter subreddit name into the input box on top.
     - You can enter whole url e.g.; `https://www.reddit.com/r/xanthis/` just the short name e.g.; `r/xanthis` or just the name e.g.; `xanthis`.
 - Select a sort option.
-- Click `search`.
+- Click `Let's Roll!`.
 
-
-_Currently there is an issue where image keeps changing their position in grid while they load._
 
 
 ## Future features
@@ -133,6 +139,9 @@ _Currently there is an issue where image keeps changing their position in grid w
     - [x] NSFW detection
     - [x] More customizability
     - [x] Better layout
+
+- v2.2
+    - [ ] Reddit OAuth
 
 
 ## Why

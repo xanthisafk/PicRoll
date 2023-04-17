@@ -14,7 +14,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BiSliderAlt } from 'react-icons/bi';
 
 import sort from '../data/sort.json';
@@ -26,6 +26,8 @@ import SettingsModal from '@/components/SettingsModal'
 import useLocalStorage from '@/hooks/useLocalStorage'
 
 import FOOT from '@/data/footer.json';
+import GoogleAnalytics from '@/components/GoogleAnalytics'
+import { DownloadIcon } from '@chakra-ui/icons'
 
 const Home = () => {
   const router = useRouter();
@@ -36,7 +38,37 @@ const Home = () => {
   const settingModalTriggers = useDisclosure();
   const ls = useLocalStorage();
 
-  const routeUser = (event) => {
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+  useEffect(() => {
+    const handleBeforeInstallPrompt = event => {
+      event.preventDefault();
+      setDeferredPrompt(event);
+    }
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+  }, [])
+
+
+  const handleInstallButtonClick = () => {
+    deferredPrompt.prompt()
+
+    deferredPrompt.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === 'accepted') {
+        toast({
+          title: "Successfull Installed",
+          description: "Thank you for installing PicRoll!",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        })
+      }
+      setDeferredPrompt(null)
+    })
+  }
+
+
+  const routeUser = event => {
     event.preventDefault();
     const sub = searchRef.current.value;
     if (!sub) {
@@ -48,11 +80,13 @@ const Home = () => {
     router.push(`/${subreddit}/${sort}/`);
 
   }
+
   return (
     <>
       <PicRollHead colorScheme={colorScheme.colorScheme} />
       <Backdrop gradient={colorScheme.gradient} />
       <main>
+        <GoogleAnalytics />
         <Flex
           width={"100vw"}
           height={"100vh"}
@@ -103,11 +137,23 @@ const Home = () => {
                 ></IconButton>
               </HStack>
             </form>
+            {deferredPrompt && (
+              <Button
+                mb={3}
+                variant={"solid"}
+                onClick={handleInstallButtonClick}
+                colorScheme={`whatsapp`}
+                width={"100%"}
+                leftIcon={<DownloadIcon />}
+              >
+                Install the PicRoll app
+              </Button>
+            )}
             <Text
               cursor={"pointer"}
               textAlign={"center"}
               _hover={{
-                "text-decoration": "underline"
+                textDecoration: "underline"
               }}
               onClick={() => router.push(FOOT.github)}
             >{FOOT.text} {FOOT.author}</Text>
@@ -117,7 +163,7 @@ const Home = () => {
               fontSize={"xs"}
               textAlign={"center"}
               _hover={{
-                "text-decoration": "underline"
+                textDecoration: "underline"
               }}
               onClick={() => router.push(FOOT.projectUrl)}
             >

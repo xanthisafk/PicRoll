@@ -1,6 +1,6 @@
 {
-  "theme_color": "#F6AD55",
-  "background_color": "#edecec",
+  "theme_color": "#286649",
+  "background_color": "#202020",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
@@ -508,28 +508,28 @@
   "screenshots": [
     {
       "src": "screenshots/1.jpg",
-      "sizes": "1980x1920",
+      "sizes": "1080x1920",
       "type": "image/jpg",
       "platform": "narrow",
       "label": "Home screen"
     },
     {
       "src": "screenshots/2.jpg",
-      "sizes": "1980x1920",
+      "sizes": "1080x1920",
       "type": "image/jpg",
       "platform": "narrow",
       "label": "Main content"
     },
     {
       "src": "screenshots/3.jpg",
-      "sizes": "1980x1920",
+      "sizes": "1080x1920",
       "type": "image/jpg",
       "platform": "narrow",
       "label": "Image information prompt"
     },
     {
       "src": "screenshots/4.jpg",
-      "sizes": "1980x1920",
+      "sizes": "1080x1920",
       "type": "image/jpg",
       "platform": "narrow",
       "label": "Customizability"
