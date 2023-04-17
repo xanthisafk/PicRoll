@@ -1,7 +1,9 @@
 import {
+  Box,
   Divider,
   Flex,
   Skeleton,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import MasonryLayout from "./MasonryLayout";
@@ -32,6 +34,20 @@ const LoadingBox = ({
   return (
     <>
       
+      {isLoading && 
+        <Box
+          width={10}
+          height={10}
+          bg={"transparent"}
+          borderRadius={3}
+          position={"fixed"}
+          zIndex={10}
+          bottom={2}
+          left={2}
+        >
+          <Spinner width={10} height={10} color={`${colorScheme}.600`} thickness="10px" />
+        </Box>
+      }
 
       <MasonryLayout>
         {isLoading && data.length === 0 && [1, 2, 3, 4, 5, 6].map((_, i) =>
@@ -49,7 +65,15 @@ const LoadingBox = ({
         <MasonryLayout>
           {data.map((item, key1) => {
             return item.images.map((image, key2) => {
-              if ((data.length > 10) && (key1 === data.length - 10)) {
+              
+              // select 10th last item
+              // or item in the middle
+              // or first item if item in middle throws an error?
+              const index = data.indexOf(data.at(-10)) === -1
+                            ? data.indexOf(data.at(Math.ceil(data.length / 2) ?? 0))
+                            : data.indexOf(data.at(-10))
+
+              if (index === key1) { 
                 return (
                   <Images
                     firstRef={firstRef}
