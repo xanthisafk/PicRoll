@@ -42,3 +42,19 @@
     background-color: gray;
     filter: blur(75px);
 }
+
+@keyframes video-effect {
+    /* 0% { background-position: 0% 0%; }
+    15% { background-position: 39% 50%; }
+    30% { background-position: 75% 75%; }
+    45% { background-position: 80% 75%; }
+    60% { background-position: 77% 12%; }
+    75% { background-position: 100% 90%; }
+    90% { background-position: 33% 66% ;} */
+}
+
+.video-effect-animation {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    animation: video-effect 120s infinite;
+}

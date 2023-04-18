@@ -10,6 +10,8 @@ const PicRollHead = ({ title, colorScheme }) => {
                   : colorScheme
   const [themeColor] = useToken('colors', [`${scheme}.400`]);
 
+  const siteVerificationCode = process.env.NEXT_PUBLIC_GOOGLE_SEARCH_CONSOLE_VERIFICATION_ID
+
   return (
     <>
       <Head>
@@ -35,6 +37,7 @@ const PicRollHead = ({ title, colorScheme }) => {
         <link rel="icon" href="/logo_small.svg" />
 
 
+        <meta name="google-site-verification" content={siteVerificationCode} />
       </Head>
     </>
   )
