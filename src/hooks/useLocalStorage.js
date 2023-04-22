@@ -7,7 +7,7 @@ const useLocalStorage = () => {
         refreshToken: "reddit-refresh-token",
         colorScheme: "picroll-default-color-scheme",
         nsfw: "picroll-is-nsfw-enabled",
-        favouriteSubreddits: "picroll-favourite-subreddit-list"
+        disableGoogleAnalytics: "picroll-google-analytics-disabled-preference",
     }
 
     const [accessToken, setAccessToken] = useState("");
@@ -15,12 +15,16 @@ const useLocalStorage = () => {
     const [refreshToken, setRefreshToken] = useState("");
     const [colorScheme, setColorScheme] = useState("");
     const [isNsfwEnabled, setNsfw] = useState("");
+    const [analyticsPref, setAnalyticsPref] = useState(true);
 
     useEffect(() => {
         if (localStorage.getItem(KEYS.nsfw) === null) {
             localStorage.setItem(KEYS.nsfw, "1")
         }
-    }, [KEYS.nsfw])
+        if (localStorage.getItem(KEYS.disableGoogleAnalytics) === undefined) {
+            localStorage.setItem(KEYS.disableGoogleAnalytics, 1);
+        }
+    }, [KEYS.nsfw, KEYS.disableGoogleAnalytics])
 
     useEffect(() => {
         setAccessToken(() => localStorage.getItem(KEYS.accessToken));
@@ -28,6 +32,8 @@ const useLocalStorage = () => {
         setRefreshToken(() => localStorage.getItem(KEYS.refreshToken));
         setColorScheme(() => localStorage.getItem(KEYS.colorScheme));
         setNsfw(() => localStorage.getItem(KEYS.nsfw) === "1" ? true : false);
+        setAnalyticsPref(localStorage.getItem(KEYS.disableGoogleAnalytics) === 1 ? true : false);
+
         const handleStorageChange = (event) => {
             if (event.storageArea === localStorage) {
                 switch (event.key) {
@@ -45,6 +51,9 @@ const useLocalStorage = () => {
                         break;
                     case KEYS.nsfw:
                         setNsfw(localStorage.getItem(KEYS.nsfw) === "1" ? true : false );
+                        break;
+                    case KEYS.disableGoogleAnalytics:
+                        setAnalyticsPref(localStorage.getItem(KEYS.disableGoogleAnalytics) === 1 ? true : false);
                         break;
                     default:
                         break;
@@ -73,6 +82,7 @@ const useLocalStorage = () => {
         refreshToken,
         colorScheme,
         isNsfwEnabled,
+        analyticsPref,
         setItem,
         clearItem
     }

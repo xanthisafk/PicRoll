@@ -4,8 +4,8 @@ const Backdrop = ({gradient}) => {
   const colors = gradient();
   return (
     <Box
-    className={"bg-gradient"}
-    backgroundImage={`radial-gradient(${colors.from}, ${colors.to})`}
+      className={"bg-gradient"}
+      backgroundImage={`radial-gradient(${colors.from}, ${colors.to})`}
      />
   )
 }
