@@ -141,7 +141,12 @@ If everything went right, your app would be running on [http://localhost:3000](h
     - [x] Better layout
 
 - v2.2
-    - [ ] Reddit OAuth
+    - [ ] ~~Reddit OAuth~~ (On hold because of new Reddit API policies)
+    - [ ] Favourite Subreddits
+
+- Future
+    - [ ] MultiReddit
+    - [ ] User
 
 
 ## Why

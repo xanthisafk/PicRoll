@@ -104,6 +104,9 @@ export default function Page() {
                                         ? favourite.remove(subreddit)
                                         : favourite.add(subreddit)
                                     }}
+                                    title={favourite.isCurrentSubredditFavourite
+                                                ? "Remove subreddit from favourites."
+                                                : "Add subreddit to favourites"}
                                     cursor={"pointer"}
                                     transition={".2s"}
                                     _hover={{

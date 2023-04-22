@@ -28,6 +28,7 @@ import useLocalStorage from '@/hooks/useLocalStorage'
 import FOOT from '@/data/footer.json';
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { DownloadIcon } from '@chakra-ui/icons'
+import FavouriteSubredditsAccordion from '@/components/FavouriteSubredditsAccordion'
 
 const Home = () => {
   const router = useRouter();
@@ -85,11 +86,11 @@ const Home = () => {
     <>
       <PicRollHead colorScheme={colorScheme.colorScheme} />
       <Backdrop gradient={colorScheme.gradient} />
-      <main>
+      <main style={{overflowX: "hidden"}}>
         <GoogleAnalytics />
         <Flex
           width={"100vw"}
-          height={"100vh"}
+          minHeight={"100vh"}
           direction={"column"}
           justify={"center"}
           align={"center"}
@@ -129,11 +130,13 @@ const Home = () => {
                   type={"submit"}
                   width={"90%"}
                   colorScheme={colorScheme.colorScheme}
+                  aria-label='search'
                 >{`Let's Roll`}</Button>
                 <IconButton
                   width={"10%"}
                   icon={<BiSliderAlt />}
                   onClick={settingModalTriggers.onOpen}
+                  aria-label='open settings'
                 ></IconButton>
               </HStack>
             </form>
@@ -149,6 +152,7 @@ const Home = () => {
                 Install the PicRoll app
               </Button>
             )}
+            <FavouriteSubredditsAccordion />
             <Text
               cursor={"pointer"}
               textAlign={"center"}

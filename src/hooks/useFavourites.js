@@ -9,7 +9,7 @@ const useFavourites = (currentSubreddit) => {
     const toast = useToast();
 
     useEffect(() => {
-        if (!currentSubreddit) return;
+        //if (!currentSubreddit) return;
         if (localStorage.getItem(KEY) === null) {
             localStorage.setItem(KEY, JSON.stringify([])); // set as empty list.
             setFavouriteSubreddits([]);
